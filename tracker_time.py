@@ -123,8 +123,10 @@ class Tracker (sublime_plugin.EventListener):
 
 # apresenta o gráfico
 class tracker_time(sublime_plugin.TextCommand):
+
     def run(self, edit):
-        webbrowser.open_new_tab("http://localhost:2016/User/tracker_time/")
+        # sublime.run_command('sublimeserver_star')
+        webbrowser.open_new_tab("http://localhost:20000/tracker_time/")
 
 
 

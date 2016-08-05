@@ -3,10 +3,12 @@ document.addEventListener('DOMContentLoaded', function(e){
     var data = '';
 
     var req = new XMLHttpRequest();
-    req.open('get', 'data.txt', false);
+    req.open('get', '../User/tracker_time/data.txt', false);
 
     req.onload = function(e){
         data = e.target.response;
+        // TODO remove //
+        console.log(data);
     }
 
     req.onerror = function(e){
@@ -125,11 +127,11 @@ document.addEventListener('DOMContentLoaded', function(e){
 
             });
 
-    // console.log(bolas);
+    // console.log(data);
     //         // TODO remove //
-            console.log(bolas);
+            // console.log(bolas);
 
     // console.log(graphLine.xAxis[0].data);
-    console.log(graphLine);
+    // console.log(graphLine);
 
 });
