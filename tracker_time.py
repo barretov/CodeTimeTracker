@@ -81,7 +81,7 @@ class Tracker (sublime_plugin.EventListener):
      # faz verificações antes do salvamento
     def pre_save(self):
 
-        if int(time.time()) - int(self.time_start) > 0:
+        if int(time.time()) - int(self.time_start) > 1:
             self.save_time()
 
     # salvamento #
