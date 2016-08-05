@@ -1,0 +1,25 @@
+[
+    {
+        "command": "sublimeserver_star",
+        "caption": "tracker_time: Start tracker_time dashboard"
+    },
+    {
+        "command": "sublimeserver_stop",
+        "caption": "tracker_time: Stop tracker_time dashboard"
+    },
+    {
+        "command": "sublimeserver_restart",
+        "caption": "tracker_time: Restart tracker_time dashboard"
+    },
+    {
+        "caption": "tracker_time: Manage tracker_time Settings",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/tracker_time.sublime-settings"
+        }
+    },
+    {
+    "caption": "tracker_time: Open Dashboard",
+        "command": "tracker_time"
+    }
+]
