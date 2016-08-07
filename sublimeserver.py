@@ -51,7 +51,7 @@ loaded = False
 def load_settings():
     '''Load SublimeServer Settings'''
     # default settings
-    defaultPort = 8080
+    defaultPort = 20000
     # default attempts
     defaultAttempts = 5
     # default interval
@@ -64,12 +64,12 @@ def load_settings():
         '.h': 'text/plain',
     }
     # default autorun
-    defaultAutorun = False
+    defaultAutorun = True
     # default extension
     defaultExtension = '.html'
 
     # load SublimeServer settings
-    s = sublime.load_settings('SublimeServer.sublime-settings')
+    s = sublime.load_settings('SublimeTime-tracker.sublime-settings')
 
     # if setting file not exists, set to default
     if not s.has('port'):
@@ -93,7 +93,7 @@ def load_settings():
             base += '/'
         s.set('base', base)
 
-    sublime.save_settings('SublimeServer.sublime-settings')
+    sublime.save_settings('SublimeTime-tracker.sublime-settings')
 
     # Merge project and user settings.
     window = sublime.active_window()
