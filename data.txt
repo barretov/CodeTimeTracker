@@ -62,3 +62,4 @@ data{"date":1470541264.404,"projetct":"SublimeTime-tracker","tech":"sublime-menu
 data{"date":1470541264.404,"projetct":"SublimeTime-tracker","tech":"sublime-menu","time":9}
 data{"date":1470541264.404,"projetct":"SublimeTime-tracker","tech":"sublime-commands","time":2}
 data{"date":1470541264.404,"projetct":"SublimeTime-tracker","tech":"sublime-commands","time":3}
+data{"date":1470541264.404,"projetct":"SublimeTime-tracker","tech":"py","time":323}
