@@ -90,24 +90,24 @@ class Tracker (sublime_plugin.EventListener):
         print("save_time")
 
         # verifica se o arquivo existe
-        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/tracker_time/data.txt") is False:
+        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
 
             print("não existe")
 
             # verifica se a pasta existe
-            if os.path.exists(os.path.realpath(sublime.packages_path()) + "/tracker_time/") is False:
+            if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/") is False:
 
                 # cria a pasta
-                os.makedirs(os.path.realpath(sublime.packages_path()) + "/tracker_time/")
+                os.makedirs(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/")
 
                 #  cria o arquivo
-            elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/tracker_time/data.txt") is False:
+            elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
 
-                create_json = open(os.path.realpath(sublime.packages_path()) + "/tracker_time/data.txt", "w")
+                create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
                 create_json.close()
 
                 # cria o cabeçalho do arquivo
-                with open(os.path.realpath(sublime.packages_path()) + "/tracker_time/data.txt", 'a') as file:
+                with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
                     file.writelines("version" + "," + self.version + "," + "arch" + "," + self.arch + "platform" + "," + self.platform + "\n")
 
         # se a pasta e o arquivo existe, escreve os dados
@@ -115,7 +115,7 @@ class Tracker (sublime_plugin.EventListener):
 
         now_time = int(time.time()) - int(self.time_start)
 
-        with open(os.path.realpath(sublime.packages_path()) + "/tracker_time/data.txt", 'a') as file:
+        with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
             file.writelines("data" + "{" + "\"date\"" + ":" + str(self.date) + "," + "\"projetct\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
         # zera o tempo e começa denovo
@@ -126,7 +126,7 @@ class tracker_time(sublime_plugin.TextCommand):
 
     def run(self, edit):
         # sublime.run_command('sublimeserver_star')
-        webbrowser.open_new_tab("http://localhost:20000/tracker_time/")
+        webbrowser.open_new_tab("http://localhost:20000/SublimeTime-tracker/")
 
 
 
