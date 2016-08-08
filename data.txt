@@ -31,3 +31,12 @@ data{"date":1470510459.03188,"projetct":"user","tech":"js","time":130}
 data{"date":1470510459.03188,"projetct":"user","tech":"","time":39}
 data{"date":1470510459.03188,"projetct":"user","tech":"txt","time":2}
 data{"date":1470510459.03188,"projetct":"user","tech":"","time":4}
+data{"date":1470510459.03188,"projetct":"user","tech":"txt","time":118}
+data{"date":1470510459.03188,"projetct":"user","tech":"","time":2}
+data{"date":1470510459.03188,"projetct":"user","tech":"html","time":4}
+data{"date":1470510459.03188,"projetct":"user","tech":"js","time":116}
+data{"date":1470510459.03188,"projetct":"user","tech":"js","time":2}
+data{"date":1470666696.999676,"projetct":"user","tech":"log","time":425}
+data{"date":1470666696.999676,"projetct":"user","tech":"html","time":2}
+data{"date":1470666696.999676,"projetct":"user","tech":"html","time":498}
+data{"date":1470666696.999676,"projetct":"user","tech":"html","time":78}
