@@ -1,0 +1,21 @@
+[
+    {
+        "caption": "Tools",
+        "mnemonic": "T",
+        "id": "tools",
+        "children":
+        [
+            {
+                "caption": "SublimeTime-tracker",
+                "children":
+                [
+                    {
+                        "command": "sublime_time_tracker_dashboard",
+                        "caption": "SublimeTime-tracker: SublimeTime-tracker Dashboard"
+                    },
+                ]
+            }
+
+        ]
+    }
+]

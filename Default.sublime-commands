@@ -1,25 +1,6 @@
 [
     {
-        "command": "sublimeserver_star",
-        "caption": "SublimeTime-tracker: Start SublimeTime-tracker dashboard"
-    },
-    {
-        "command": "sublimeserver_stop",
-        "caption": "SublimeTime-tracker: Stop SublimeTime-tracker dashboard"
-    },
-    {
-        "command": "sublimeserver_restart",
-        "caption": "SublimeTime-tracker: Restart SublimeTime-tracker dashboard"
-    },
-    {
-        "caption": "SublimeTime-tracker: Manage SublimeTime-tracker Settings",
-        "command": "open_file",
-        "args": {
-            "file": "${packages}/User/SublimeTime-tracker.sublime-settings"
-        }
-    },
-    {
-    "caption": "SublimeTime-tracker: Open Dashboard",
-        "command": "tracker_time"
+        "command": "sublime_time_tracker_dashboard",
+        "caption": "SublimeTime-tracker: SublimeTime-tracker Dashboard"
     },
 ]

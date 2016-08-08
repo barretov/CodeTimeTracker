@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from time import gmtime, strftime
 
-class Tracker (sublime_plugin.EventListener):
+class SublimeTimeTracker (sublime_plugin.EventListener):
 
     date = datetime.now().timestamp()
     time_start = time.time()
@@ -121,12 +121,8 @@ class Tracker (sublime_plugin.EventListener):
         # zera o tempo e começa denovo
         self.time_start = time.time()
 
-# apresenta o gráfico
-class tracker_time(sublime_plugin.TextCommand):
+# Abre o Dashboard
+class SublimeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
-    def run(self, edit):
-        # sublime.run_command('sublimeserver_star')
-        webbrowser.open_new_tab("http://localhost:20000/SublimeTime-tracker/")
-
-
-
+    def run(self):
+        webbrowser.open_new_tab("file://" + os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/index.html")

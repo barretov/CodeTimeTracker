@@ -109,9 +109,4 @@ document.addEventListener('DOMContentLoaded', function(e){
     // apresenta o gráfico na view
     var myChart = echarts.init(document.getElementById('graphLine'));
     myChart.setOption(graphLine);
-
-    // TODO remove //
-    // console.log(data);
-
-
 });
