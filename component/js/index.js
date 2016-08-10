@@ -21,42 +21,88 @@ document.addEventListener('DOMContentLoaded', function(e){
 
     for(let i = 1; i < teste.length; i++) {
 
-       dataObject.push(JSON.parse(teste[i]));
-   }
+     dataObject.push(JSON.parse(teste[i]));
+ }
 
     // faz os acumuladores
     var bolas = {};
+    bolas.month ={};
+    bolas.day ={};
+    var status = {};
+    status.fullTime = 0;
+    status.fullMonth = 0;
+    status.fullDay = 0;
 
+    // percorre todos os dados.
     dataObject.forEach(function(element, index) {
 
         let date = new Date(element.date * 1000);
-        // let key = [date.getDate(), date.getMonth(), date.getFullYear()].join('-');
-        let key = [date.getMonth(), date.getFullYear()].join('-');
-        let tech = element.tech;
+        let day = [date.getDate(), date.getMonth(), date.getFullYear()].join('-');
+        let month = [date.getMonth(), date.getFullYear()].join('-');
+        // let tech = element.tech;
 
-        // data
-        if(!bolas[key]){
+        // diário
+        if(!bolas.day[day]){
 
-            bolas[key] = {
+            bolas.day[day] = {
 
-                day: {
-                    "date": key,
+                data: {
+                    "date": day,
                     "time": element.time,
                 }
             };
 
+            // full day
+            status.fullDay ++;
+
         }else{
 
-            bolas[key].day.time += element.time;
+            bolas.day[day].data.time += element.time;
         }
 
+        // mensal
+        if(!bolas.month[month]){
+
+            bolas.month[month] = {
+
+                data: {
+                    "date": month,
+                    "time": element.time,
+                }
+            };
+
+            // full month
+            status.fullMonth ++;
+
+        }else{
+
+            bolas.month[month].data.time += element.time;
+        }
+
+        // total de horas
+        status.fullTime += element.time;
+
     });
+
+            // TODO remove //
+            console.log(status);
+            console.log(bolas);
+
+
+    // total de horas
+    document.getElementById('fullTime').innerHTML = "<strong>Total de horas: </strong>" + (status.fullTime / 3600).toFixed(2);
+
+    // total de meses
+    document.getElementById('fullMonth').innerHTML = "<strong>Total de Meses: </strong>" + status.fullMonth;
+
+    // total de dias
+    document.getElementById('fullDay').innerHTML = "<strong>Total de Dias: </strong>" + status.fullDay;
 
     // Config of Graphic Line
     var graphLine ={
 
-         title: {
-            text: 'Horas Mensais',
+       title: {
+        text: 'Horas Mensais',
             // subtext: 'Mensal',
             x: 'center'
         },
@@ -97,13 +143,13 @@ document.addEventListener('DOMContentLoaded', function(e){
     };
 
     // ajusta os dados para o gráfico de linha
-    Object.keys(bolas).forEach(function(element, index) {
+    Object.keys(bolas.month).forEach(function(element, index) {
 
         // insere os dias
-        graphLine.xAxis[0].data.push(bolas[element].day.date);
+        graphLine.xAxis[0].data.push(bolas.month[element].data.date);
 
         // insere as horas
-        graphLine.series[0].data.push(bolas[element].day.time / 3600);
+        graphLine.series[0].data.push(bolas.month[element].data.time / 3600);
     });
 
     // apresenta o gráfico na view
