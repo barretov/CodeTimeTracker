@@ -2,21 +2,45 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <title>SublimeTime-tracker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="component/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="component/css/index.css">
+  <title>SublimeTime-tracker</title>
 
 </head>
 
 <body>
 
-    <h3>SublimeTracker-Time</h3>
+ <div class="container-fluid">
+   <div class="row">
 
-    <!-- Line Graphic -->
-    <div id="graphLine" style="height:400px; width: 100%"></div>
+     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       <legend>SublimeTime-tracker</legend>
+     </div>
 
-    <script src="component/js/jquery.slim.min.js"></script>
-    <script src="component/js/index.js"></script>
-    <script src="component/js/echarts-all.js"></script>
+     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+
+       <legend>Status</legend>
+
+       <ul class="nav nav-sidebar">
+         <li> <span><strong>Plataforma:</strong> Linux dsada</span></li>
+         <li> <span><strong>Plataforma:</strong> Linuxdads</span></li>
+         <li> <span><strong>Plataforma:</strong> Linuxdasdd</span></li>
+         <li> <span><strong>Plataforma:</strong> Linuxdsad</span></li>
+       </ul>
+
+     </div>
+
+     <div id="graphLine" class="col-xs-12 col-sm-9 col-md-9 col-lg-10 graphic"></div>
+
+   </div>
+ </div>
+
+ <script src="component/js/jquery.slim.min.js"></script>
+ <script src="component/js/index.js"></script>
+ <script src="component/js/bootstrap.min.js"></script>
+ <script src="component/js/echarts-all.js"></script>
 
 </body>
 
