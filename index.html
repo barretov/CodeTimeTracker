@@ -16,32 +16,72 @@
    <div class="row">
 
      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <legend>SublimeTime-tracker</legend>
+       <h3>SublimeTime-tracker</h3>
      </div>
 
-     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
 
-       <legend>Status</legend>
+     <legend>Status</legend>
 
-       <ul class="nav nav-sidebar">
-         <li> <span id="fullTime"></span></li>
-         <li> <span id="fullMonth"></span></li>
-         <li> <span id="fullDay"></span></li>
-         <li> <span><strong>Plataforma:</strong> Linuxdasdd</span></li>
-         <li> <span><strong>Plataforma:</strong> Linuxdsad</span></li>
-       </ul>
+     <ul class="nav nav-sidebar text-gray">
+       <strong>
+         <li> <span id="version"></span></li>
+         <li> <span id="arch"></span></li>
+         <li> <span id="platform"></span></li>
+       </strong>
+     </ul>
 
-     </div>
+     <br />
 
-     <div id="graphLine" class="col-xs-12 col-sm-9 col-md-9 col-lg-10 graphic"></div>
+     <legend>Totals</legend>
 
-   </div>
+     <ul class="nav nav-sidebar text-gray">
+       <strong>
+        <li> <span id="fullTime"><strong></strong></span></li>
+        <li> <span id="fullMonth"></span></li>
+        <li> <span id="fullDay"></span></li>
+        <li> <span id="fullProj"></span></li>
+        <li> <span id="fullTech"></span></li>
+      </strong>
+    </ul>
+
+    <br />
+
+    <legend>About</legend>
+
+    <ul class="nav nav-sidebar">
+     <!-- <li> <span>Graphics by Baidu</span></li> -->
+   </ul>
+
  </div>
 
- <script src="component/js/jquery.slim.min.js"></script>
- <script src="component/js/index.js"></script>
- <script src="component/js/bootstrap.min.js"></script>
- <script src="component/js/echarts-all.js"></script>
+ <!-- Graphics -->
+ <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+
+   <legend>Graphics</legend>
+
+   <div id="dayGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+   <div id="monthGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+   <div id="projGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+   <div id="techGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+
+ </div>
+
+</div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+  <footer>
+    Developed by <a href="https://github.com/victoreduardobarreto" target="#" class="text-info">Victor Eduardo Barreto</a> | Graphics by Baidu (Copyright (c) 2013, Baidu Inc. All rights reserved)
+  </footer>
+
+</div>
+
+<script src="component/js/jquery.slim.min.js"></script>
+<script src="component/js/index.js"></script>
+<script src="component/js/bootstrap.min.js"></script>
+<script src="component/js/echarts-all.js"></script>
 
 </body>
 

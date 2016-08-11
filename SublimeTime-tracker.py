@@ -20,7 +20,7 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
     arch = sublime.arch()
 
     # apresenta mensagem de iniciado
-    sublime.active_window().status_message("     | tracker time :: iniciado |")
+    sublime.active_window().status_message("     | SublimeTime-tracker :: iniciado |")
 
     #  listeners  #
     # observa a mudança de abas
@@ -94,21 +94,34 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
 
             print("não existe")
 
+            # cria os arquivos
+            # data.txt
+            create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
+            create_json.close()
+
+            # status.txt
+            create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/status.txt", "w")
+            create_json.close()
+
+            # cria o cabeçalho do arquivo status
+            with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/status.txt", 'a') as file:
+                 file.writelines("stts" + "{" + "\"version\"" + ":" + str(self.version) + "," + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
+
             # verifica se a pasta existe
-            if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/") is False:
+            # if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/") is False:
 
-                # cria a pasta
-                os.makedirs(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/")
+            #     # cria a pasta
+            #     os.makedirs(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/")
 
-                #  cria o arquivo
-            elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
+            #     #  cria o arquivo
+            # elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
 
-                create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
-                create_json.close()
+            #     create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
+            #     create_json.close()
 
-                # cria o cabeçalho do arquivo
-                with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
-                    file.writelines("version" + "," + self.version + "," + "arch" + "," + self.arch + "platform" + "," + self.platform + "\n")
+            #     # cria o cabeçalho do arquivo
+            #     with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
+            #         file.writelines("version" + "," + self.version + "," + "arch" + "," + self.arch + "platform" + "," + self.platform + "\n")
 
         # se a pasta e o arquivo existe, escreve os dados
         print("existe o arquivo")
@@ -116,7 +129,7 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
         now_time = int(time.time()) - int(self.time_start)
 
         with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":" + str(self.date) + "," + "\"projetct\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
+            file.writelines("data" + "{" + "\"date\"" + ":" + str(self.date) + "," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
         # zera o tempo e começa denovo
         self.time_start = time.time()
