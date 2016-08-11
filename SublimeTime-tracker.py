@@ -20,7 +20,7 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
     arch = sublime.arch()
 
     # apresenta mensagem de iniciado
-    sublime.active_window().status_message("     | SublimeTime-tracker :: iniciado |")
+    sublime.active_window().status_message("     | SublimeTime-tracker :: Started |")
 
     #  listeners  #
     # observa a mudança de abas
@@ -139,3 +139,10 @@ class SublimeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         webbrowser.open_new_tab("file://" + os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/index.html")
+
+# remove file data.
+class SublimeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
+
+    def run(self):
+        os.remove(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt")
+        sublime.active_window().status_message("     | SublimeTime-tracker :: Data deleted |")

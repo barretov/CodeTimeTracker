@@ -1,6 +1,10 @@
 [
     {
         "command": "sublime_time_tracker_dashboard",
-        "caption": "SublimeTime-tracker: SublimeTime-tracker Dashboard"
+        "caption": "SublimeTime-tracker: Open Dashboard"
+    },
+    {
+        "command": "sublime_time_tracker_delete_data",
+        "caption": "SublimeTime-tracker: Delete tracker data"
     },
 ]
