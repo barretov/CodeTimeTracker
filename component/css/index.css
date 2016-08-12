@@ -32,6 +32,10 @@
 
 }
 
+.navbar-fixed-top {
+  padding-top: 56px;
+}
+
 body{
   background-color: whitesmoke;
 }

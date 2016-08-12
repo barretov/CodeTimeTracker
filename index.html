@@ -19,55 +19,60 @@
        <h3>SublimeTime-tracker</h3>
      </div>
 
-   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 navbar-fixed-top">
 
-     <legend>Status</legend>
+       <legend>Status</legend>
 
-     <ul class="nav nav-sidebar text-gray">
-       <strong>
-         <li> <span id="version"></span></li>
-         <li> <span id="arch"></span></li>
-         <li> <span id="platform"></span></li>
-       </strong>
+       <ul class="nav nav-sidebar text-gray">
+         <strong>
+           <li> <span id="version"></span></li>
+           <li> <span id="arch"></span></li>
+           <li> <span id="platform"></span></li>
+         </strong>
+       </ul>
+
+       <br />
+
+       <legend>Totals</legend>
+
+       <ul class="nav nav-sidebar text-gray">
+         <strong>
+          <li> <span id="fullTime"><strong></strong></span></li>
+          <li> <span id="fullMonth"></span></li>
+          <li> <span id="fullDay"></span></li>
+          <li> <span id="fullProj"></span></li>
+          <li> <span id="fullTech"></span></li>
+        </strong>
+      </ul>
+
+      <br />
+
+      <legend>About</legend>
+
+      <ul class="nav nav-sidebar">
+       <!-- <li> <span>Graphics by Baidu</span></li> -->
      </ul>
 
-     <br />
+   </div>
 
-     <legend>Totals</legend>
+   <!-- adjust sidebar fixed in layout -->
+   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
 
-     <ul class="nav nav-sidebar text-gray">
-       <strong>
-        <li> <span id="fullTime"><strong></strong></span></li>
-        <li> <span id="fullMonth"></span></li>
-        <li> <span id="fullDay"></span></li>
-        <li> <span id="fullProj"></span></li>
-        <li> <span id="fullTech"></span></li>
-      </strong>
-    </ul>
+   </div>
 
-    <br />
+   <!-- Graphics -->
+   <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 
-    <legend>About</legend>
+     <legend>Graphics</legend>
 
-    <ul class="nav nav-sidebar">
-     <!-- <li> <span>Graphics by Baidu</span></li> -->
-   </ul>
+     <div id="dayGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+     <div id="monthGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+     <div id="projGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+     <div id="techGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
+
+   </div>
 
  </div>
-
- <!-- Graphics -->
- <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-
-   <legend>Graphics</legend>
-
-   <div id="dayGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
-   <div id="monthGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
-   <div id="projGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
-   <div id="techGraph" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graphic"></div>
-
- </div>
-
-</div>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
