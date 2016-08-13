@@ -209,7 +209,7 @@
     },
 
     legend: {
-        data:['Total Hours', 'a']
+        data:['Total Hours']
     },
 
     tooltip : {
@@ -243,12 +243,6 @@
         data: []
 
     },
-    {
-        name: 'a',
-        type: 'line',
-        data: ['12312', 313123, 0]
-
-    },
 
     ]
 };
@@ -257,28 +251,67 @@
 var all = {};
 all.all = fullData;
 
-Object.keys(all).forEach(function(e, i) {
+        // TODO remove //
+        // console.log(fullData);
+
+
+        Object.keys(all).forEach(function(e, i) {
 
         // DAY
         Object.keys(all[e].day).forEach(function(de, di){
 
-                    // TODO remove //
-                    // console.log(all[e].day[de].data.time);
+            dayGraph.series[0].data.push((all[e].day[de].data.time / 3600).toFixed(2));
+            dayGraph.xAxis[0].data.push(all[e].day[de].data.date);
+
+        // TODO remove //
+        // console.log(all[e].day);
+
+                    // project
+        var ex = true;
+                    Object.keys(all[e].day[de].proj).forEach(function(pe, pi){
+
+
+                                    // loop de series
+                                    console.log(dayGraph.series);
+                                    // console.log(ex);
+                                    dayGraph.series.forEach(function (dge, dgi) {
+
+                                    // TODO remove //
+                                    // console.log(dge.name);
+
+                                    if (pe !== dge.name && ex) {
+                                                // TODO remove //
+
+                                                dayGraph.series.push({name: pe, data:[ (all[e].day[de].proj[pe].time /3600).toFixed(2) ], type: 'bar'});
+                                        // dayGraph.series[di] = {}
+                                        ex = false;
+
+                                    } else if(pe === dge.name) {
+
+                                                console.log("111");
+                                        dge.data.push(all[e].day[de].proj[pe].time /3600);
+
+                                    }
+
+                                })
+                                // console.log(all[e].day[de].proj[pe]); // DADOS
+                                // console.log(dayGraph.series);
+
+                                // insere as series
+                                // dayGraph.series
+
+                            });
+
                             // TODO remove //
+                            // console.log(dayGraph.series);
 
-                    // insere os dias
-                    // console.log(dayGraph.xAxis[di]);
-                    // console.log(all[e].day[de].data.date);
-                     dayGraph.xAxis[di].data.push(all[e].day[de].data.date);
-                    dayGraph.series[di].data.push((all[e].day[de].data.time / 3600).toFixed(2));
-
-                });
+                        });
 
     });
 
 
 
-let tempProject = {};
+        let tempProject = {};
     // ajusta os dados para o gráfico (day)
     Object.keys(fullData.day).forEach(function(element, index) {
 
@@ -288,7 +321,7 @@ let tempProject = {};
         // insere as horas
         // dayGraph.series[0].data.push((fullData.day[element].data.time / 3600).toFixed(2));
 
-      // let s = fullData.day[element].proj; // igual a um dia.
+      let s = fullData.day[element].proj; // igual a um dia.
 
 
       // laço de projetos
