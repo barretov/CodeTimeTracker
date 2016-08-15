@@ -321,10 +321,15 @@
       // laço de projetos
       Object.keys(s).forEach(function(ele, ind) {
 
-        if(s[ele].date === fullData.day[element].data.date) {
+                // TODO remove //
+                console.log(tempProject[ele]);
+                // console.log(ind);
+
+
+        // if(s[ele].date === fullData.day[element].data.date) {
 
             if (!tempProject[ele]) {
-                console.log("bb");
+                // console.log("bb");
 
                 dayGraph.series[++ind]= {name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'};
                 dayGraph.legend.data.push(ele);
@@ -332,18 +337,18 @@
                 // dayGraph.series.push({name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'});
                 // dayGraph.series[++ind].data.push((s[ele].time /3600).toFixed(2));
                 // dayGraph.series[++ind].push({name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'});
-                tempProject[ele] = {id:ind};
+                tempProject[ele] = [ind];
 
-            } else {
+            } else if(tempProject[ele]) {
 
-            console.log("cc");
+            // console.log("cc");
                 dayGraph.series[++ind].data.push((s[ele].time /3600).toFixed(2));
 
             }
             // TODO remove //
-            console.log(tempProject);
+            // console.log(tempProject);
             // TODO remove //
-            console.log(dayGraph.series);
+            // console.log(dayGraph.series);
             // TODO remove //
             // console.log(s[ele]);
             // console.log(s[ele].proj);
@@ -361,7 +366,7 @@
                 // console.log(dayGraph.series);
                 // TODO remove //
                 // console.log(s[ele]);
-            }
+            // }
                 // TODO remove //
                 // console.log(ele);
                 // TODO remove //
