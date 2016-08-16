@@ -10,7 +10,7 @@ from time import gmtime, strftime
 
 class SublimeTimeTracker (sublime_plugin.EventListener):
 
-    date = datetime.now().timestamp()
+    date = datetime.now()
     time_start = time.time()
     time_save = 300 # time for save seconds
     current_project = "none"
@@ -18,6 +18,8 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
     version = sublime.version()
     platform = sublime.platform()
     arch = sublime.arch()
+
+    print(datetime.now())
 
     # apresenta mensagem de iniciado
     sublime.active_window().status_message("     | SublimeTime-tracker :: Started |")
@@ -129,7 +131,7 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
         now_time = int(time.time()) - int(self.time_start)
 
         with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":" + str(self.date) + "," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
+            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(self.date) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
         # zera o tempo e começa denovo
         self.time_start = time.time()

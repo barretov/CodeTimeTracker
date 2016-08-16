@@ -1,9 +1,9 @@
-    console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-    console.log("┃     SublimeTime-tracker 1.0      ┃");
-    console.log("┠──────────────────────────────────┨");
-    console.log("┃          victorio.tk             ┃");
-    console.log("┃ victor.eduardo.barreto@gmail.com ┃");
-    console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+    // console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+    // console.log("┃     SublimeTime-tracker 1.0      ┃");
+    // console.log("┠──────────────────────────────────┨");
+    // console.log("┃          victorio.tk             ┃");
+    // console.log("┃ victor.eduardo.barreto@gmail.com ┃");
+    // console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
     document.addEventListener('DOMContentLoaded', function(e){
 
@@ -35,8 +35,8 @@
 
     reqStts.send();
 
-    // transforma txto em objeto
-    var sttsObject = [];
+    // transforma txto em objeto para formar o STATUS
+    let sttsObject = [];
     let sttsTemp = stts.split('stts');
 
     for(let i = 1; i < sttsTemp.length; i++) {
@@ -44,8 +44,8 @@
      sttsObject.push(JSON.parse(sttsTemp[i]));
  }
 
-    // transforma txto em objeto
-    var dataObject = [];
+    // transforma txto em objeto para os DADOS
+    let dataObject = [];
     let dataTemp = data.split('data');
 
     for(let i = 1; i < dataTemp.length; i++) {
@@ -53,27 +53,30 @@
      dataObject.push(JSON.parse(dataTemp[i]));
  }
 
-    // faz os acumuladores
-    var fullData = {};
+    // faz os acumuladores de dados.
+    let fullData = {};
     fullData.month ={};
     fullData.day ={};
     fullData.tech ={};
     fullData.proj ={};
 
-    var status = {};
+    // Acumuladores de status.
+    let status = {};
     status.fullTime = 0;
     status.fullMonth = 0;
     status.fullDay = 0;
     status.fullTech = 0;
-    status.fullProj = 0;
+    status.fullProj = [];
 
     // percorre todos os dados.
     dataObject.forEach(function(element, index) {
 
-        // adjust data
-        let date = new Date(element.date * 1000);
-        let day = [date.getDate(), date.getMonth(), date.getFullYear()].join('-');
-        let month = [date.getMonth(), date.getFullYear()].join('-');
+        let fullDate = element.date.split(" ");
+        let date = fullDate[0];
+        let hour = fullDate[1];
+        let month = date.slice(0,7);
+        let day = date.slice(5);
+
         ('' == element.tech)? element.tech = "unknown": '';
         ('none' == element.project)? element.project = "off project": '';
 
@@ -150,7 +153,7 @@
             };
 
             // full proj
-            status.fullProj ++;
+            status.fullProj.push(element.project);
 
         }else{
 
@@ -194,236 +197,112 @@
     document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
 
     // total de projetos
-    document.getElementById('fullProj').innerHTML = status.fullProj + "  Projects";
+    document.getElementById('fullProj').innerHTML = status.fullProj.length + "  Projects";
 
     // total de tecnologias
     document.getElementById('fullTech').innerHTML = status.fullTech + " Technolgies";
 
-    // Config of Tech Graph
-    var techGraph ={
-
-       title: {
-        // text: 'Horas Tecnologia',
-        subtext: 'Hours by Technology',
-        x: 'center'
-    },
-
-    tooltip : {
-
-        trigger: 'axis'
-    },
-
-    calculable : true,
-
-    xAxis : [
-
-    {
-        name : '[Technology]',
-        type : 'category',
-        boundaryGap : true,
-        data : []
+    // ### Config TECHNOLOGY GRAPHIC ### //
+    let techGraph = {
+        title:{text:'',subtext:'Hours by Technology',x:'center'},
+        legend:{data:['Total Hours']},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Technology]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Workerd Hours',type:'bar',data:[]}],
     }
-    ],
-
-    yAxis : [
-    {
-        name: '[Hours]',
-        type : 'value'
-    }
-    ],
-
-    series : [
-
-    {
-        name:'Worked Hours',
-        type:'bar',
-        data:[]
-    },
-
-    ]
-};
 
     // ajusta os dados para o gráfico
-    Object.keys(fullData.tech).forEach(function(element, index) {
+    Object.keys(fullData.tech).forEach(function(e, i) {
 
         // insere os dias
-        techGraph.xAxis[0].data.push(fullData.tech[element].data.tech);
+        techGraph.xAxis[0].data.push(fullData.tech[e].data.tech);
 
         // insere as horas
-        techGraph.series[0].data.push((fullData.tech[element].data.time / 3600).toFixed(2));
+        techGraph.series[0].data.push((fullData.tech[e].data.time / 3600).toFixed(2));
     });
 
     // apresenta o gráfico na view
     var myChart = echarts.init(document.getElementById('techGraph'));
     myChart.setOption(techGraph);
 
-    // Config of Day Graph
-    var dayGraph ={
-
-       title: {
-        // text: 'Horas Mensais',
-        subtext: 'Hours by Day',
-        x: 'center'
-    },
-
-    legend: {
-        data:['Total Hours']
-    },
-
-    tooltip : {
-
-        trigger: 'axis'
-    },
-
-    calculable : true,
-
-    xAxis : [
-
-    {
-        name: '[Day]',
-        type : 'category',
-        boundaryGap : true,
-        data : []
+    // ### config DAY GRAPHIC ### //
+    let dayGraph = {
+        title:{subtext:'Hours by Day and Projects by Day', x:'center'},
+        legend:{data:['Total Hours']},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Total Hours',type:'line',data:[]}],
     }
-    ],
 
-    yAxis : [
-    {
-        name: '[Hours]',
-        type : 'value'
-    }
-    ],
-
-    series : [
-    {
-        name: 'Total Hours',
-        type: 'line',
-        data: []
-
-    },
-
-    ]
-};
-
-      let tempProject = {};
     // ajusta os dados para o gráfico (day)
-    Object.keys(fullData.day).forEach(function(element, index) {
+    Object.keys(fullData.day).forEach(function(e, i) {
 
         // insere os dias
-        dayGraph.xAxis[0].data.push(fullData.day[element].data.date);
+        dayGraph.xAxis[0].data.push(fullData.day[e].data.date);
 
         // insere as horas
-        dayGraph.series[0].data.push((fullData.day[element].data.time / 3600).toFixed(2));
+        dayGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
 
-      let s = fullData.day[element].proj; // igual a um dia.
+        // Insere projetos no gráfico de dia.
+        let s = fullData.day[e].proj; // igual a um dia.
 
+        // monta o gráfico de projetos por dia
+        Object.keys(s).forEach(function(e, i) {
 
-      // laço de projetos
-      Object.keys(s).forEach(function(ele, ind) {
+            let tt = findValue(dayGraph.series, "name", e);
 
-                // TODO remove //
-                console.log(tempProject[ele]);
-                // console.log(ind);
+            if (!tt) {
 
+              dayGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
 
-        // if(s[ele].date === fullData.day[element].data.date) {
+          } else {
 
-            if (!tempProject[ele]) {
-                // console.log("bb");
+              dayGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+          }
+      });
 
-                dayGraph.series[++ind]= {name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'};
-                dayGraph.legend.data.push(ele);
-                // TODO remove //
-                // dayGraph.series.push({name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'});
-                // dayGraph.series[++ind].data.push((s[ele].time /3600).toFixed(2));
-                // dayGraph.series[++ind].push({name: ele, data:[ (s[ele].time /3600).toFixed(2) ], type: 'bar'});
-                tempProject[ele] = [ind];
+    // insere zero
+    status.fullProj.forEach(function(e, i) {
 
-            } else if(tempProject[ele]) {
+        let tt = findValue(dayGraph.series, "name", e);
 
-            // console.log("cc");
-                dayGraph.series[++ind].data.push((s[ele].time /3600).toFixed(2));
+        if (tt) {
 
+            if(dayGraph.series[tt].data.length < dayGraph.xAxis[0].data.length) {
+
+                dayGraph.series[tt].data.push(0);
             }
-            // TODO remove //
-            // console.log(tempProject);
-            // TODO remove //
-            // console.log(dayGraph.series);
-            // TODO remove //
-            // console.log(s[ele]);
-            // console.log(s[ele].proj);
+        } else {
 
-            // console.log(fullData.day[element]);
+            dayGraph.series.push({name: e, data:[0], type: 'bar'} );
+        }
+    });
+});
 
-                // if (!dayGraph.legend.data[ele]){
+    // make the legend of day graphic
+    status.fullProj.forEach(function(e, i) {
 
-                    // dayGraph.legend.data.push(ele);
-                // }
-
-                //
-                // TODO remove //
-                // console.log(dayGraph.series);
-                // console.log(dayGraph.series);
-                // TODO remove //
-                // console.log(s[ele]);
-            // }
-                // TODO remove //
-                // console.log(ele);
-                // TODO remove //
-                // console.log(fullData);
-
-                // legend
-            });
-  });
-
+        dayGraph.legend.data.push(e);
+    });
 
     // apresenta o gráfico na view
     var myChart = echarts.init(document.getElementById('dayGraph'));
     myChart.setOption(dayGraph);
 
-    // Config of Month Graph
-    var monthGraph ={
-
-       title: {
-        // text: 'Horas Mensais',
-        subtext: 'Hours by Month',
-        x: 'center'
-    },
-
-    tooltip : {
-
-        trigger: 'axis'
-    },
-
-    calculable : true,
-
-    xAxis : [
-
-    {
-        name : '[Month]',
-        type : 'category',
-        boundaryGap : true,
-        data : []
+    // ### config MONTH GRAPHIC ### //
+    let monthGraph = {
+        title:{subtext:'Hours by Month', x:'center'},
+        legend:{data:[]},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Month]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Worked Hours',type:'line',data:[]}],
     }
-    ],
-
-    yAxis : [
-    {
-        name: '[Hours]',
-        type : 'value'
-    }
-    ],
-
-    series : [
-
-    {
-        name:'Worked Hours',
-        type:'line',
-        data:[]
-    },
-
-    ]
-};
 
     // ajusta os dados para o gráfico de linha
     Object.keys(fullData.month).forEach(function(element, index) {
@@ -439,50 +318,16 @@
     var myChart = echarts.init(document.getElementById('monthGraph'));
     myChart.setOption(monthGraph);
 
-
-        // ### Config of Proj Graph ### //
-        var projGraph ={
-
-           title: {
-            // text: 'Horas Mensais',
-            subtext: 'Hours by Projects',
-            x: 'center'
-        },
-
-        tooltip : {
-
-            trigger: 'axis'
-        },
-
-        calculable : true,
-
-        xAxis : [
-
-        {
-            name : '[Project]',
-            type : 'category',
-            boundaryGap : true,
-            data : []
-        }
-        ],
-
-        yAxis : [
-        {
-            name: '[Hours]',
-            type : 'value'
-        }
-        ],
-
-        series : [
-
-        {
-            name:'Worked Hours',
-            type:'line',
-            data:[]
-        },
-
-        ]
-    };
+    // ### config PROJECT GRAPHIC ### //
+    let projGraph = {
+        title:{subtext:'Hours by Projects', x:'center'},
+        legend:{data:[]},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Worked Hours',type:'line',data:[]}],
+    }
 
         // ajusta os dados para o gráfico de linha
         Object.keys(fullData.proj).forEach(function(element, index) {
@@ -499,3 +344,23 @@
         myChart.setOption(projGraph);
 
     });
+
+
+    /**
+     * { function for verify if exists some data in array of objects }
+     *
+     * @param      {<array>}  arraySearch  The array search
+     * @param      {<str>}  key        The key
+     * @param      {<str>}  value      The value
+     * @return     {int or null}  { if true ruturn is id of array, if false return null }
+     */
+     function findValue(arraySearch, key, value) {
+
+        for (var i = 0; i < arraySearch.length; i++) {
+
+            if (arraySearch[i][key] == value) {
+                return i;
+            }
+        }
+        return null;
+    }
