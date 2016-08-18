@@ -6,12 +6,12 @@
         "children":
         [
             {
-                "caption": "SublimeTime-tracker",
+                "caption": "CodeTimeTracker",
                 "children":
                 [
                     {
-                        "command": "sublime_time_tracker_dashboard",
-                        "caption": "SublimeTime-tracker: SublimeTime-tracker Dashboard"
+                        "command": "code_time_tracker_dashboard",
+                        "caption": "CodeTimeTracker: Open Dashboard"
                     },
                 ]
             }

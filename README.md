@@ -1,4 +1,4 @@
-# SublimeTime-tracker
+# CodeTimeTracker
 Sublime plugin for count the time spend in your projects
 
 --------------------------------------------------------------
