@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from time import gmtime, strftime
 
-class SublimeTimeTracker (sublime_plugin.EventListener):
+class CodeTimeTracker (sublime_plugin.EventListener):
 
     date = datetime.now()
     time_start = time.time()
@@ -22,7 +22,7 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
     print(datetime.now())
 
     # apresenta mensagem de iniciado
-    sublime.active_window().status_message("     | SublimeTime-tracker :: Started |")
+    sublime.active_window().status_message("     | CodeTimeTracker :: Started |")
 
     #  listeners  #
     # observa a mudança de abas
@@ -92,37 +92,37 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
         print("save_time")
 
         # verifica se o arquivo existe
-        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
+        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is False:
 
             print("não existe")
 
             # cria os arquivos
             # data.txt
-            create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
+            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
             create_json.close()
 
             # status.txt
-            create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/status.txt", "w")
+            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
             create_json.close()
 
             # cria o cabeçalho do arquivo status
-            with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/status.txt", 'a') as file:
+            with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
                  file.writelines("stts" + "{" + "\"version\"" + ":" + str(self.version) + "," + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
 
             # verifica se a pasta existe
-            # if os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/") is False:
+            # if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/") is False:
 
             #     # cria a pasta
-            #     os.makedirs(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/")
+            #     os.makedirs(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/")
 
             #     #  cria o arquivo
-            # elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt") is False:
+            # elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is False:
 
-            #     create_json = open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", "w")
+            #     create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
             #     create_json.close()
 
             #     # cria o cabeçalho do arquivo
-            #     with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
+            #     with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", 'a') as file:
             #         file.writelines("version" + "," + self.version + "," + "arch" + "," + self.arch + "platform" + "," + self.platform + "\n")
 
         # se a pasta e o arquivo existe, escreve os dados
@@ -130,21 +130,21 @@ class SublimeTimeTracker (sublime_plugin.EventListener):
 
         now_time = int(time.time()) - int(self.time_start)
 
-        with open(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt", 'a') as file:
+        with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", 'a') as file:
             file.writelines("data" + "{" + "\"date\"" + ":\"" + str(self.date) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
         # zera o tempo e começa denovo
         self.time_start = time.time()
 
 # Abre o Dashboard
-class SublimeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
+class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
-        webbrowser.open_new_tab("file://" + os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/index.html")
+        webbrowser.open_new_tab("file://" + os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/index.html")
 
 # remove file data.
-class SublimeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
+class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
-        os.remove(os.path.realpath(sublime.packages_path()) + "/SublimeTime-tracker/data.txt")
-        sublime.active_window().status_message("     | SublimeTime-tracker :: Data deleted |")
+        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt")
+        sublime.active_window().status_message("     | CodeTimeTracker :: Data deleted |")
