@@ -55,32 +55,35 @@
 
     // faz os acumuladores de dados.
     let fullData = {};
-    fullData.month ={};
     fullData.day ={};
+    fullData.month ={};
+    fullData.year ={};
     fullData.tech ={};
     fullData.proj ={};
 
     // Acumuladores de status.
     let status = {};
     status.fullTime = 0;
-    status.fullMonth = 0;
     status.fullDay = 0;
-    status.fullTech = 0;
+    status.fullMonth = 0;
+    status.fullYear = 0;
+    status.fullTech = [];
     status.fullProj = [];
 
     // percorre todos os dados.
     dataObject.forEach(function(element, index) {
 
         let fullDate = element.date.split(" ");
-        let date = fullDate[0];
+        let day = fullDate[0];
         let hour = fullDate[1];
-        let month = date.slice(0,7);
-        let day = date.slice(5);
+        let month = day.slice(0,7);
+        let year = day.slice(0,4);
 
+        // adjust for unkown technologies and projects
         ('' == element.tech)? element.tech = "unknown": '';
         ('none' == element.project)? element.project = "off project": '';
 
-        // diário
+        // diary
         if(!fullData.day[day]){
 
             fullData.day[day] = {
@@ -90,6 +93,7 @@
                     "time": element.time,
                 },
                 proj: {},
+                tech: {},
             };
 
             // full day
@@ -100,7 +104,7 @@
             fullData.day[day].data.time += element.time;
         }
 
-        // mensal
+        // mountly
         if(!fullData.month[month]){
 
             fullData.month[month] = {
@@ -119,7 +123,26 @@
             fullData.month[month].data.time += element.time;
         }
 
-        // total de horas
+         // year
+         if(!fullData.year[year]){
+
+            fullData.year[year] = {
+
+                data: {
+                    "date": year,
+                    "time": element.time,
+                },
+            };
+
+            // full day
+            status.fullYear ++;
+
+        }else{
+
+            fullData.year[year].data.time += element.time;
+        }
+
+        // total hours
         status.fullTime += element.time;
 
         // technology
@@ -134,7 +157,7 @@
             };
 
             // full technology
-            status.fullTech ++;
+            status.fullTech.push(element.tech);
 
         }else{
 
@@ -149,7 +172,8 @@
                 data: {
                     "date": element.project,
                     "time": element.time,
-                }
+                },
+                tech:{},
             };
 
             // full proj
@@ -158,6 +182,21 @@
         }else{
 
             fullData.proj[element.project].data.time += element.time;
+        }
+
+        // technology per Project
+        if (!fullData.proj[element.project].tech[element.tech]) {
+
+            fullData.proj[element.project].tech[element.tech] = {
+
+                "tech": element.tech,
+                "time": element.time,
+                "date": day,
+            };
+
+        } else {
+
+            fullData.proj[element.project].tech[element.tech].time += element.time;
         }
 
         // project per day
@@ -175,7 +214,21 @@
             fullData.day[day].proj[element.project].time += element.time;
         }
 
-    });
+            // technology per day
+            if (!fullData.day[day].tech[element.tech]) {
+
+                fullData.day[day].tech[element.tech] = {
+
+                    "tech": element.tech,
+                    "time": element.time,
+                    "date": day,
+                };
+
+            } else {
+
+                fullData.day[day].tech[element.tech].time += element.time;
+            }
+        });
 
     // ### Status ### //
     // version
@@ -190,47 +243,25 @@
     // total de horas
     document.getElementById('fullTime').innerHTML = (status.fullTime / 3600).toFixed(2) + " Hours";
 
+    // total de dias
+    document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
+
     // total de meses
     document.getElementById('fullMonth').innerHTML = status.fullMonth + "  Months";
 
-    // total de dias
-    document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
+     // total de anos
+     document.getElementById('fullYear').innerHTML = status.fullYear + "  Years";
 
     // total de projetos
     document.getElementById('fullProj').innerHTML = status.fullProj.length + "  Projects";
 
     // total de tecnologias
-    document.getElementById('fullTech').innerHTML = status.fullTech + " Technolgies";
+    document.getElementById('fullTech').innerHTML = status.fullTech.length + " Technolgies";
 
-    // ### Config TECHNOLOGY GRAPHIC ### //
-    let techGraph = {
-        title:{text:'',subtext:'Hours by Technology',x:'center'},
-        legend:{data:['Total Hours']},
-        tooltip:{trigger:'axis'},
-        calculable: true,
-        xAxis:[{name:'[Technology]', type:'category', boundaryGap:true, data:[]}],
-        yAxis:[{name:'[Hours]', type:'value'}],
-        series:[{name:'Workerd Hours',type:'bar',data:[]}],
-    }
-
-    // ajusta os dados para o gráfico
-    Object.keys(fullData.tech).forEach(function(e, i) {
-
-        // insere os dias
-        techGraph.xAxis[0].data.push(fullData.tech[e].data.tech);
-
-        // insere as horas
-        techGraph.series[0].data.push((fullData.tech[e].data.time / 3600).toFixed(2));
-    });
-
-    // apresenta o gráfico na view
-    var myChart = echarts.init(document.getElementById('techGraph'));
-    myChart.setOption(techGraph);
-
-    // ### config DAY GRAPHIC ### //
+    // ### config DAY X PROJECT GRAPHIC ### //
     let dayGraph = {
-        title:{subtext:'Hours by Day and Projects by Day', x:'center'},
-        legend:{data:['Total Hours']},
+        // title:{subtext:'Hours by Day and Projects by Day',x:'right'},
+        legend:{data:['Total Hours'],x:'left'},
         tooltip:{trigger:'axis'},
         calculable: true,
         xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
@@ -293,10 +324,145 @@
     var myChart = echarts.init(document.getElementById('dayGraph'));
     myChart.setOption(dayGraph);
 
+    // =========================================================================================== //
+    // ### config DAY X TECHNOLOGY GRAPHIC ### //
+    let dayTechGraph = {
+        // title:{subtext:'Hours by Day and Technology by Day', x:'right'},
+        legend:{data:['Total Hours'],x:'left'},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Total Hours',type:'bar',data:[]}],
+    }
+
+    // ajusta os dados para o gráfico (day)
+    Object.keys(fullData.day).forEach(function(e, i) {
+
+        // insere os dias
+        dayTechGraph.xAxis[0].data.push(fullData.day[e].data.date);
+
+        // insere as horas
+        dayTechGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
+
+        // Insere projetos no gráfico de dia.
+        let s = fullData.day[e].tech; // igual a um dia.
+
+        // monta o gráfico de projetos por dia
+        Object.keys(s).forEach(function(e, i) {
+
+            let tt = findValue(dayTechGraph.series, "name", e);
+
+            if (!tt) {
+
+              dayTechGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
+
+          } else {
+
+              dayTechGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+          }
+      });
+
+    // insere zero
+    status.fullTech.forEach(function(e, i) {
+
+        let tt = findValue(dayTechGraph.series, "name", e);
+
+        if (tt) {
+
+            if(dayTechGraph.series[tt].data.length < dayTechGraph.xAxis[0].data.length) {
+
+                dayTechGraph.series[tt].data.push(0);
+            }
+        } else {
+
+            dayTechGraph.series.push({name: e, data:[0], type: 'bar'} );
+        }
+    });
+});
+
+    // make the legend of day graphic
+    status.fullTech.forEach(function(e, i) {
+
+        dayTechGraph.legend.data.push(e);
+    });
+
+    // apresenta o gráfico na view
+    var myChart = echarts.init(document.getElementById('dayTechGraph'));
+    myChart.setOption(dayTechGraph);
+
+    // =========================================================================================== //
+    // ### config TECHNOLOGY X Project GRAPHIC ### //
+    let projTechGraph = {
+        // title:{subtext:'Hours by Day and Technology by Day', x:'right'},
+        legend:{data:['Total Hours'],x:'left'},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Total Hours',type:'bar',data:[]}],
+    }
+
+    // ajusta os dados para o gráfico (day)
+    Object.keys(fullData.proj).forEach(function(e, i) {
+
+        // insere os dias
+        projTechGraph.xAxis[0].data.push(fullData.proj[e].data.date);
+
+        // insere as horas
+        projTechGraph.series[0].data.push((fullData.proj[e].data.time / 3600).toFixed(2));
+
+        // Insere projetos no gráfico de dia.
+        let s = fullData.proj[e].tech; // igual um projeto
+
+        // monta o gráfico de projetos por dia
+        Object.keys(s).forEach(function(e, i) {
+
+            let tt = findValue(projTechGraph.series, "name", e);
+
+            if (!tt) {
+
+              projTechGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
+
+          } else {
+
+              projTechGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+          }
+      });
+
+    // insere zero
+    status.fullTech.forEach(function(e, i) {
+
+        let tt = findValue(projTechGraph.series, "name", e);
+
+        if (tt) {
+
+            if(projTechGraph.series[tt].data.length < projTechGraph.xAxis[0].data.length) {
+
+                projTechGraph.series[tt].data.push(0);
+            }
+        } else {
+
+            projTechGraph.series.push({name: e, data:[0], type: 'bar'} );
+        }
+    });
+});
+
+    // make the legend of day graphic
+    status.fullTech.forEach(function(e, i) {
+
+        projTechGraph.legend.data.push(e);
+    });
+
+    // apresenta o gráfico na view
+    var myChart = echarts.init(document.getElementById('projTechGraph'));
+    myChart.setOption(projTechGraph);
+
+
     // ### config MONTH GRAPHIC ### //
     let monthGraph = {
-        title:{subtext:'Hours by Month', x:'center'},
-        legend:{data:[]},
+        // title:{subtext:'Hours by Month', x:'right'},
+        legend:{data:[],x:'left'},
         tooltip:{trigger:'axis'},
         calculable: true,
         xAxis:[{name:'[Month]', type:'category', boundaryGap:true, data:[]}],
@@ -318,15 +484,40 @@
     var myChart = echarts.init(document.getElementById('monthGraph'));
     myChart.setOption(monthGraph);
 
+    // ### config YEAR GRAPHIC ### //
+    let yearGraph = {
+        // title:{subtext:'Hours by Month', x:'right'},
+        legend:{data:[],x:'left'},
+        tooltip:{trigger:'axis'},
+        calculable: true,
+        xAxis:[{name:'[Year]', type:'category', boundaryGap:true, data:[]}],
+        yAxis:[{name:'[Hours]', type:'value'}],
+        series:[{name:'Worked Hours',type:'bar',data:[]}],
+    }
+
+    // ajusta os dados para o gráfico de linha
+    Object.keys(fullData.month).forEach(function(element, index) {
+
+        // insere os dias
+        yearGraph.xAxis[0].data.push(fullData.month[element].data.date);
+
+        // insere as horas
+        yearGraph.series[0].data.push((fullData.month[element].data.time / 3600).toFixed(2));
+    });
+
+    // apresenta o gráfico na view
+    var myChart = echarts.init(document.getElementById('yearGraph'));
+    myChart.setOption(yearGraph);
+
     // ### config PROJECT GRAPHIC ### //
     let projGraph = {
-        title:{subtext:'Hours by Projects', x:'center'},
-        legend:{data:[]},
+        // title:{subtext:'Total Hours by Projects', x:'right'},
+        legend:{data:[],x:'left'},
         tooltip:{trigger:'axis'},
         calculable: true,
         xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
         yAxis:[{name:'[Hours]', type:'value'}],
-        series:[{name:'Worked Hours',type:'line',data:[]}],
+        series:[{name:'Worked Hours',type:'bar',data:[]}],
     }
 
         // ajusta os dados para o gráfico de linha
@@ -343,8 +534,32 @@
         var myChart = echarts.init(document.getElementById('projGraph'));
         myChart.setOption(projGraph);
 
-    });
+        // ### Config TECHNOLOGY GRAPHIC ### //
+        let techGraph = {
+            // title:{text:'',subtext:'Total Hours by Technology',x:'right'},
+            legend:{data:[],x:'left'},
+            tooltip:{trigger:'axis'},
+            calculable: true,
+            xAxis:[{name:'[Technology]', type:'category', boundaryGap:true, data:[]}],
+            yAxis:[{name:'[Hours]', type:'value'}],
+            series:[{name:'Workerd Hours',type:'bar',data:[]}],
+        }
 
+        // ajusta os dados para o gráfico
+        Object.keys(fullData.tech).forEach(function(e, i) {
+
+            // insere os dias
+            techGraph.xAxis[0].data.push(fullData.tech[e].data.tech);
+
+            // insere as horas
+            techGraph.series[0].data.push((fullData.tech[e].data.time / 3600).toFixed(2));
+        });
+
+        // apresenta o gráfico na view
+        var myChart = echarts.init(document.getElementById('techGraph'));
+        myChart.setOption(techGraph);
+
+    });
 
     /**
      * { function for verify if exists some data in array of objects }
@@ -352,11 +567,11 @@
      * @param      {<array>}  arraySearch  The array search
      * @param      {<str>}  key        The key
      * @param      {<str>}  value      The value
-     * @return     {int or null}  { if true ruturn is id of array, if false return null }
+     * @return     {int or null}  { if true return is id of array, if false return null }
      */
      function findValue(arraySearch, key, value) {
 
-        for (var i = 0; i < arraySearch.length; i++) {
+        for (let i = 0; i < arraySearch.length; i++) {
 
             if (arraySearch[i][key] == value) {
                 return i;
@@ -364,3 +579,22 @@
         }
         return null;
     }
+
+    /**
+     * { function for show or hidden the tittle }
+     */
+     $(window).scroll(function(){
+
+      let top = $(window).scrollTop();
+
+      if(top > 60){
+
+        $('#subMenu').stop().fadeIn(100);
+        $('.navbar-fixed-top').css('padding-top', 0);
+
+    }else{
+
+        $('#subMenu').stop().fadeOut(0);
+        $('.navbar-fixed-top').css('padding-top', '75px');
+    }
+});
