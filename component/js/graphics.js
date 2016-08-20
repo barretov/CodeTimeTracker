@@ -275,13 +275,13 @@
 	// PROJECTS BY DAY //
 	let projDayGraph = {
 
-		legend:{data:['Total Hours'],x:'left'},
+		legend:{data:['Total Hours'],x:'center',},
 		tooltip:{trigger:'axis'},
 		calculable: true,
 		xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
 		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
 		series:[{name:'Total Hours',type:'line',data:[]}],
-	}
+	};
 
 	// adjust data for make the graphic
 	Object.keys(fullData.day).forEach(function(e, i) {
@@ -345,13 +345,14 @@
 
 	// TECHNOLOGIES BY DAY //
 	let techDayGraph = {
-		legend:{data:['Total Hours'],x:'left'},
+
+		legend:{data:['Total Hours'],x:'center'},
 		tooltip:{trigger:'axis'},
 		calculable: true,
 		xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
 		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-		series:[{name:'Total Hours',type:'bar',data:[]}],
-	}
+		series:[{name:'Total Hours',type:'bar', data:[]}],
+	};
 
 	// ajusta os dados para o gráfico (day)
 	Object.keys(fullData.day).forEach(function(e, i) {
@@ -414,13 +415,13 @@
 
 	// TECHNOLOGY BY PROJECT //
 	let techProjGraph = {
-		legend:{data:['Total Hours'],x:'left'},
+		legend:{data:['Total Hours'],x:'center'},
 		tooltip:{trigger:'axis'},
 		calculable: true,
 		xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
 		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
 		series:[{name:'Total Hours',type:'bar',data:[]}],
-	}
+	};
 
 	// ajusta os dados para o gráfico (day)
 	Object.keys(fullData.proj).forEach(function(e, i) {
@@ -483,7 +484,7 @@
 	// ### config PROJECT GRAPHIC ### //
 	let projGraph = {
 		title:{x:'center'},
-		legend:{orient:'horizontal',data:[],x:'left'},
+		legend:{orient:'horizontal',data:[],x:'center'},
 		tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
 		calculable: true,
 		series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
@@ -503,7 +504,7 @@
 		// ### Config TECHNOLOGY GRAPHIC ### //
 		let techGraph = {
 			title:{x:'center'},
-			legend:{orient:'horizontal',data:[],x:'left'},
+			legend:{orient:'horizontal',data:[],x:'center'},
 			tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
 			calculable: true,
 			series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
