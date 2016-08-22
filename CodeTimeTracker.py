@@ -13,6 +13,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     date = datetime.now()
     time_start = time.time()
     time_save = 300 # time for save seconds
+    no_activity = time.time()
     current_project = "none"
     current_technology = "none"
     version = sublime.version()
@@ -53,38 +54,57 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     def handle_active(self):
         print("========================================")
         print("handle_active")
+        # print(sublime.active_window().size())
 
-        # se o projeto ainda é o mesmo salva o tempo
-        if self.current_project == sublime.active_window().extract_variables()['project_base_name']:
+        # try found the project
+        try:
+            # se o projeto ainda é o mesmo salva o tempo
+            if self.current_project == sublime.active_window().extract_variables()['project_base_name']:
 
-            if self.current_technology != sublime.active_window().extract_variables()['file_extension']:
+                # try found extension of archive
+                try:
+                    if self.current_technology != sublime.active_window().extract_variables()['file_extension']:
 
-               self.pre_save()
-               self.current_technology = sublime.active_window().extract_variables()['file_extension']
-               print("mudou a tecnologia")
+                       self.pre_save()
+                       self.current_technology = sublime.active_window().extract_variables()['file_extension']
+                       print("mudou a tecnologia")
 
-            elif self.time_save < int(time.time()) - int(self.time_start):
+                    elif self.time_save < int(time.time()) - int(self.time_start):
+                        self.pre_save()
+
+                except KeyError as error:
+                    print("CodeTimeTracker | You are working with a archive without extension")
+
+            # se o projeto foi mudado
+            else:
+
+                print("save and change")
+                # salva o tempo ate aqui
                 self.pre_save()
 
-        # se o projeto foi mudado
-        else:
+                # muda as variaveis de projeto
+                self.current_project = sublime.active_window().extract_variables()['project_base_name']
+                print("mudou de projeto")
 
-            print("save and change")
-            # salva o tempo ate aqui
-            self.pre_save()
+            print(int(time.time()) - int(self.time_start))
+            print("========================================")
 
-            # muda as variaveis de projeto
-            self.current_project = sublime.active_window().extract_variables()['project_base_name']
-            print("mudou de projeto")
-
-        print(int(time.time()) - int(self.time_start))
-        print("========================================")
+        except KeyError as error:
+            print("CodeTimeTracker | You are working out of project")
 
      # faz verificações antes do salvamento
     def pre_save(self):
 
-        if int(time.time()) - int(self.time_start) > 1:
-            self.save_time()
+        # check if have more of one second in archive
+        if int(time.time()) - int(self.time_start) > 2:
+
+            # check if sublime was inactive during 40 minutes
+            if int(time.time()) - int(self.no_activity) < 2400:
+                self.save_time()
+
+            else:
+                self.time_start = time.time()
+                self.no_activity = time.time()
 
     # salvamento #
     def save_time(self):
@@ -135,6 +155,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 
         # zera o tempo e começa denovo
         self.time_start = time.time()
+        self.no_activity = time.time()
 
 # Abre o Dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
