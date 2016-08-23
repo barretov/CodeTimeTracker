@@ -13,7 +13,8 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     date = datetime.now()
     time_start = time.time()
     time_save = 300 # time for save seconds
-    no_activity = time.time()
+    time_afk = 2400 # time to verify if sublime is inactive (40 minutes)
+    time_inactivity = time.time()
     current_project = "none"
     current_technology = "none"
     version = sublime.version()
@@ -98,13 +99,13 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         # check if have more of one second in archive
         if int(time.time()) - int(self.time_start) > 2:
 
-            # check if sublime was inactive during 40 minutes
-            if int(time.time()) - int(self.no_activity) < 2400:
+            # check if sublime was inactive
+            if int(time.time()) - int(self.time_inactivity) < self.time_afk:
                 self.save_time()
 
             else:
                 self.time_start = time.time()
-                self.no_activity = time.time()
+                self.time_inactivity = time.time()
 
     # salvamento #
     def save_time(self):
@@ -155,7 +156,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 
         # zera o tempo e começa denovo
         self.time_start = time.time()
-        self.no_activity = time.time()
+        self.time_inactivity = time.time()
 
 # Abre o Dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
