@@ -3,7 +3,7 @@ Sublime plugin for count the time spend in your projects
 
 --------------------------------------------------------------
 
---Warning
+Warning
 
     This plugin meansure the time spend in projects, then you have to working with sublime projects.
 
@@ -14,7 +14,7 @@ Sublime plugin for count the time spend in your projects
 
     Now you are in a sublime project.
 
---Dashboard
+Dashboard
 
     To open dashboard can:
 
@@ -25,10 +25,12 @@ Sublime plugin for count the time spend in your projects
         - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Open Dasshboard'.
 
     FireFox
+    =======
 
         Dashboard works fine in FireFox.
 
     Chrome
+    ======
 
         If you want open dashboard in google chrome, you have to open the chrome using
         this command --allow-file-access-from-files
@@ -53,11 +55,12 @@ Sublime plugin for count the time spend in your projects
         Example: chrome.exe --allow-file-access-from-files
 
     Safari
+    ======
 
         Enable the develop menu using the preferences panel, under Advanced -> "Show develop menu in menu bar"
         Then from the safari "Develop" menu, select "Disable local file restrictions".
 
---Delete Data
+Delete Data
 
     To delete tracker data you have do:
 
@@ -67,7 +70,7 @@ Sublime plugin for count the time spend in your projects
 
         - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Delete tracker data'.
 
---Comming Soon
+Comming Soon
 
     - Option for choose technologies to appear in the graphics.
     - Maybe git integration for merge tracker data, case you use CodeTimeTracker in another computer.
