@@ -1,120 +1,119 @@
 <!DOCTYPE html>
+
 <html lang="en-us">
-  <head>
+
+<head>
     <meta charset="UTF-8">
-    <title>CodeTimeTracker by victoreduardobarreto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">CodeTimeTracker</h1>
-      <h2 class="project-tagline">Sublime plugin for count the time spend in your projects</h2>
-      <a href="https://github.com/victoreduardobarreto/CodeTimeTracker" class="btn">View on GitHub</a>
-      <a href="https://github.com/victoreduardobarreto/CodeTimeTracker/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/victoreduardobarreto/CodeTimeTracker/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="icon" href="component/img/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="component/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="component/css/normalize.css">
+    <title>CodeTimeTracker</title>
+</head>
 
-    <section class="main-content">
-      <h1>
-<a id="codetimetracker" class="anchor" href="#codetimetracker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CodeTimeTracker</h1>
+<body>
 
-<p>Sublime plugin for count the time spend in your projects</p>
+    <div class="container-fluid">
+        <div class="row">
 
-<hr>
+            <section>
 
-<p>Warning</p>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-<pre><code>This plugin meansure the time spend in projects, then you have to working with sublime projects.
+                    <span>
 
-To do a project in sublime text you have to:
+                        <h3>
+                            <img class="icon" src="component/img/icon.svg" class="img-resposive">
+                            <span>CodeTimeTracker</span>
+                            <span id="subTitle" class="text-orange hidden-xs hidden-sm">Sublime plugin for count the time spend in your projects</span>
+                        </h3>
 
-    1- Go to menu 'File'-&gt;'Open Folder...' choose the project folder.
-    2- Go to menu 'Project'-&gt;'Save Project As...' and save the project.
+                    </span>
 
-Now you are in a sublime project.
-</code></pre>
+                    <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
+                        <span id="subTitle" class="text-justify">Sublime plugin for count the time spend in your projects</span>
+                    </div>
 
-<p>Dashboard</p>
+                </div>
 
-<pre><code>To open dashboard can:
+            </section>
 
-    - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
-    and choose the option "CondeTimeTracker: Open Dashboard".
+            <section>
 
-    or.
+                <div class="hidden-xs col-sm-3 col-md-3 col-lg-2 navbar-fixed-top">
 
-    - Open menu 'Tools'-&gt;'CodeTimeTracker'-&gt;'CodeTimeTracker:Open Dasshboard'.
+                    <h4 id="subMenu"><img class="iconSmall" src="component/img/icon.svg" class="img-resposive">
+                        CodeTimeTracker
+                    </h4>
 
-FireFox
-=======
+                    <legend>About</legend>
 
-    Dashboard works fine in FireFox.
+                    <ul class="nav nav-sidebar text-gray">
+                        <strong>
+                            <li> <span>CodeTimeTracker V.1.0.0</span></li>
+                            <li> <span>github</span></li>
+                        </strong>
+                    </ul>
 
-Chrome
-======
+                </div>
 
-    If you want open dashboard in google chrome, you have to open the chrome using
-    this command --allow-file-access-from-files
+                <!-- adjust sidebar fixed in layout -->
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2"></div>
 
-    to do this:
+                <!-- dashboard -->
+                <div id="imgDash" class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
 
-        1- Close all running Chrome instances first.
+                <legend>Dashboard</legend>
 
-        2- Start the Chrome executable with a command line flag:
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-    Linux:
-    Example /usr/bin/chromium-browser --allow-file-access-from-files
+                    <span>
 
-    Mac:
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-    Example: open /Applications/Google\ Chrome.app --args --allow-file-access-from-files
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-    Windows:
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-    On Windows, probably the easiest is probably to create a special shortcut icon which
-    has added the flag given above (right-click on shortcut -&gt; properties -&gt; target).
+                    </span>
 
-    Example: chrome.exe --allow-file-access-from-files
+                    </div>
 
-Safari
-======
+                </div>
 
-    Enable the develop menu using the preferences panel, under Advanced -&gt; "Show develop menu in menu bar"
-    Then from the safari "Develop" menu, select "Disable local file restrictions".
-</code></pre>
+            </div>
 
-<p>Delete Data</p>
+        </div>
+    </div>
 
-<pre><code>To delete tracker data you have do:
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-    - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
-    and choose the option "CondeTimeTracker: Delete tracker data".
+        <footer class="footer">
+        </footer>
 
-    or.
+    </div>
 
-    - Open menu 'Tools'-&gt;'CodeTimeTracker'-&gt;'CodeTimeTracker:Delete tracker data'.
-</code></pre>
+    <script src="component/js/jquery.min.js"></script>
+    <script src="component/js/bootstrap.min.js"></script>
+    <script src="component/js/functions.js"></script>
 
-<p>Comming Soon</p>
+</section>
 
-<pre><code>- Option for choose technologies to appear in the graphics.
-- Maybe git integration for merge tracker data, case you use CodeTimeTracker in another computer.
-- Top 3 techonogies.
-- Top 3 projects.
-</code></pre>
+</body>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/victoreduardobarreto/CodeTimeTracker">CodeTimeTracker</a> is maintained by <a href="https://github.com/victoreduardobarreto">victoreduardobarreto</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
-  </body>
 </html>
