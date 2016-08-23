@@ -94,6 +94,6 @@ function saveChanges() {
 	sessionStorage.setItem('year', $('#inpYear').val());
 
 	// close modal and reload the page
-	$('#cfgModal').modal('hide').delay(250);
+	$('#confModal').modal('hide').delay(250);
 	location.reload();
 };

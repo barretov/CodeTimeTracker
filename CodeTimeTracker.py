@@ -21,45 +21,34 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     platform = sublime.platform()
     arch = sublime.arch()
 
-    print(datetime.now())
-
-    # apresenta mensagem de iniciado
+    # show init message
     sublime.active_window().status_message("     | CodeTimeTracker :: Started |")
 
     #  listeners  #
-    # observa a mudança de abas
     def on_activated(self, view):
         self.handle_active()
 
-    # observa o carregamento de novos arquivos
     def on_load_async(self, view):
         self.handle_active()
 
-    # observa o clone de arquivos
     def on_clone_async(self, view):
         self.handle_active()
 
-    # observa a criação de arquivos
     def on_new_async(self, view):
         self.handle_active()
 
-    # observa o salvamento de arquivos
     def on_post_save(self, view):
         self.handle_active()
 
-    # observa o fechamento de arquivos
     def on_close(self, view):
         self.handle_active()
 
-    # Controlador de salvamento #
+    # controller
     def handle_active(self):
-        print("========================================")
-        print("handle_active")
-        # print(sublime.active_window().size())
 
         # try found the project
         try:
-            # se o projeto ainda é o mesmo salva o tempo
+            # verify if the project is the same yet
             if self.current_project == sublime.active_window().extract_variables()['project_base_name']:
 
                 # try found extension of archive
@@ -68,7 +57,6 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 
                        self.pre_save()
                        self.current_technology = sublime.active_window().extract_variables()['file_extension']
-                       print("mudou a tecnologia")
 
                     elif self.time_save < int(time.time()) - int(self.time_start):
                         self.pre_save()
@@ -76,24 +64,19 @@ class CodeTimeTracker (sublime_plugin.EventListener):
                 except KeyError as error:
                     print("CodeTimeTracker | You are working with a archive without extension")
 
-            # se o projeto foi mudado
+            # if the project was changed
             else:
 
-                print("save and change")
-                # salva o tempo ate aqui
+                # save the time until here
                 self.pre_save()
 
-                # muda as variaveis de projeto
+                # change the variable of project
                 self.current_project = sublime.active_window().extract_variables()['project_base_name']
-                print("mudou de projeto")
-
-            print(int(time.time()) - int(self.time_start))
-            print("========================================")
 
         except KeyError as error:
             print("CodeTimeTracker | You are working out of project")
 
-     # faz verificações antes do salvamento
+    # do verification before save
     def pre_save(self):
 
         # check if have more of one second in archive
@@ -103,21 +86,18 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             if int(time.time()) - int(self.time_inactivity) < self.time_afk:
                 self.save_time()
 
+            # if is inactive reset the time
             else:
                 self.time_start = time.time()
                 self.time_inactivity = time.time()
 
-    # salvamento #
+    # save
     def save_time(self):
 
-        print("save_time")
-
-        # verifica se o arquivo existe
+        # verify if file exists
         if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is False:
 
-            print("não existe")
-
-            # cria os arquivos
+            # make the files
             # data.txt
             create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
             create_json.close()
@@ -126,39 +106,21 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
             create_json.close()
 
-            # cria o cabeçalho do arquivo status
+            # write status file
             with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
                  file.writelines("stts" + "{" + "\"version\"" + ":" + str(self.version) + "," + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
 
-            # verifica se a pasta existe
-            # if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/") is False:
-
-            #     # cria a pasta
-            #     os.makedirs(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/")
-
-            #     #  cria o arquivo
-            # elif os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is False:
-
-            #     create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
-            #     create_json.close()
-
-            #     # cria o cabeçalho do arquivo
-            #     with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", 'a') as file:
-            #         file.writelines("version" + "," + self.version + "," + "arch" + "," + self.arch + "platform" + "," + self.platform + "\n")
-
-        # se a pasta e o arquivo existe, escreve os dados
-        print("existe o arquivo")
-
+        # set now time variable
         now_time = int(time.time()) - int(self.time_start)
 
         with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", 'a') as file:
             file.writelines("data" + "{" + "\"date\"" + ":\"" + str(self.date) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
-        # zera o tempo e começa denovo
+        # reset time variables
         self.time_start = time.time()
         self.time_inactivity = time.time()
 
-# Abre o Dashboard
+# open the dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):

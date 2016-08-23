@@ -6,587 +6,592 @@ console.log("┗━━━━━━━━━━━━━━━━━━━━━�
 
 document.addEventListener('DOMContentLoaded', function(e){
 
-// get data archive.
-let reqData = new XMLHttpRequest();
-reqData.open('get', 'data.txt', false);
-
-reqData.onload = function(e){
-    data = e.target.response;
-}
-
-reqData.onerror = function(e){
-    console.log(e);
-}
-
-reqData.send();
-
-// get status archive.
-let reqStts = new XMLHttpRequest();
-reqStts.open('get', 'status.txt', false);
-
-reqStts.onload = function(e){
-    stts = e.target.response;
-}
-
-reqStts.onerror = function(e){
-    console.log(e);
-}
-
-reqStts.send();
-
-// transform txt in object to make the status
-let sttsObject = [];
-let sttsTemp = stts.split('stts');
-
-for(let i = 1; i < sttsTemp.length; i++) {
-
-    sttsObject.push(JSON.parse(sttsTemp[i]));
-}
-
-// transform txt in object to make the graphics
-let dataObject = [];
-let dataTemp = data.split('data');
+	// get data archive.
+	let reqData = new XMLHttpRequest();
+	reqData.open('get', 'data.txt', false);
+
+	reqData.onload = function(e){
+		data = e.target.response;
+	}
+
+	reqData.onerror = function(e){
+		console.log(e);
+	}
+
+	reqData.send();
+
+	// get status archive.
+	let reqStts = new XMLHttpRequest();
+	reqStts.open('get', 'status.txt', false);
+
+	reqStts.onload = function(e){
+		stts = e.target.response;
+	}
+
+	reqStts.onerror = function(e){
+		console.log(e);
+	}
+
+	reqStts.send();
+
+	// transform txt in object to make the status
+	let sttsObject = [];
+	let sttsTemp = stts.split('stts');
+
+	for(let i = 1; i < sttsTemp.length; i++) {
+
+		sttsObject.push(JSON.parse(sttsTemp[i]));
+	}
+
+	// transform txt in object to make the graphics
+	let dataObject = [];
+	let dataTemp = data.split('data');
 
-for(let i = 1; i < dataTemp.length; i++) {
-
-    dataObject.push(JSON.parse(dataTemp[i]));
-}
+	for(let i = 1; i < dataTemp.length; i++) {
+
+		dataObject.push(JSON.parse(dataTemp[i]));
+	}
 
-// accumulators of data
-let fullData = {};
-fullData.day ={};
-fullData.month ={};
-fullData.year ={};
-fullData.tech ={};
-fullData.proj ={};
-
-// accumulators of status
-let status = {};
-status.fullTime = 0;
-status.fullDay = 0;
-status.fullMonth = 0;
-status.fullYear = 0;
-status.fullTech = [];
-status.fullProj = [];
+	// accumulators of data
+	let fullData = {};
+	fullData.day ={};
+	fullData.month ={};
+	fullData.year ={};
+	fullData.tech ={};
+	fullData.proj ={};
+
+	// accumulators of status
+	let status = {};
+	status.fullTime = 0;
+	status.fullDay = 0;
+	status.fullMonth = 0;
+	status.fullYear = 0;
+	status.fullTech = [];
+	status.fullProj = [];
 
-// init limiters with default value
-let limitDay = 31;
-let limitDayTech = 31;
-let limitTechProj = 31;
-let limitMonth = 12;
-let limitYear = 25;
+	// init limiters with default value
+	let limitDay = 31;
+	let limitDayTech = 31;
+	let limitTechProj = 31;
+	let limitMonth = 12;
+	let limitYear = 25;
 
-// set up user limiters
-sessionStorage.getItem('day')? limitDay = sessionStorage.getItem('day'): '';
-sessionStorage.getItem('dayTech')? limitDayTech = sessionStorage.getItem('dayTech'): '';
-sessionStorage.getItem('techProj')? limitTechProj = sessionStorage.getItem('techProj'): '';
-sessionStorage.getItem('month')? limitMonth = sessionStorage.getItem('month') : '';
-sessionStorage.getItem('year')? limitYear = sessionStorage.getItem('year') : '';
+	// set up user limiters
+	sessionStorage.getItem('day')? limitDay = sessionStorage.getItem('day'): '';
+	sessionStorage.getItem('dayTech')? limitDayTech = sessionStorage.getItem('dayTech'): '';
+	sessionStorage.getItem('techProj')? limitTechProj = sessionStorage.getItem('techProj'): '';
+	sessionStorage.getItem('month')? limitMonth = sessionStorage.getItem('month') : '';
+	sessionStorage.getItem('year')? limitYear = sessionStorage.getItem('year') : '';
 
-// set data in inputs
-$('#inpDay').val(limitDay);
-$('#inpDayTech').val(limitDayTech);
-$('#inpTechProj').val(limitTechProj);
-$('#inpMonth').val(limitMonth);
-$('#inpYear').val(limitYear);
+	// set data in inputs
+	$('#inpDay').val(limitDay);
+	$('#inpDayTech').val(limitDayTech);
+	$('#inpTechProj').val(limitTechProj);
+	$('#inpMonth').val(limitMonth);
+	$('#inpYear').val(limitYear);
 
-// pass for all data
-dataObject.forEach(function(e, i) {
+	// pass for all data
+	dataObject.forEach(function(e, i) {
 
-    let fullDate = e.date.split(" ");
-    let day = fullDate[0];
-    let hour = fullDate[1];
-    let month = day.slice(0,7);
-    let year = day.slice(0,4);
+		let fullDate = e.date.split(" ");
+		let day = fullDate[0];
+		let hour = fullDate[1];
+		let month = day.slice(0,7);
+		let year = day.slice(0,4);
 
-// treats data
-// adjust for working out project
-('none' == e.project)? e.project = "out project": '';
+		// treats data
+		// adjust for working out project
+		('none' == e.project)? e.project = "out project": '';
 
-// check the extensions to measure better the technologies
-if(e.tech.length < 5 && e.tech != "none") {
+		// check the extensions to measure better the technologies
+		if(e.tech.length < 5 && e.tech != "none") {
 
-// diary
-if(!fullData.day[day]){
+			// diary
+			if(!fullData.day[day]){
 
-    fullData.day[day] = {
+				fullData.day[day] = {
 
-        data: {
-            "date": day,
-            "time": e.time,
-        },
-        proj: {},
-        tech: {},
-    };
+					data: {
+						"date": day,
+						"time": e.time,
+					},
+					proj: {},
+					tech: {},
+				};
 
-// full day
-status.fullDay ++;
+			// full day
+			status.fullDay ++;
 
-}else{
+		}else{
 
-    fullData.day[day].data.time += e.time;
-}
+			fullData.day[day].data.time += e.time;
+		}
 
-// mountly
-if(!fullData.month[month]){
+			// mountly
+			if(!fullData.month[month]){
 
-    fullData.month[month] = {
+				fullData.month[month] = {
 
-        data: {
-            "date": month,
-            "time": e.time,
-        }
-    };
+					data: {
+						"date": month,
+						"time": e.time,
+					}
+				};
 
-// full month
-status.fullMonth ++;
+			// full month
+			status.fullMonth ++;
 
-}else{
+		}else{
 
-    fullData.month[month].data.time += e.time;
-}
+			fullData.month[month].data.time += e.time;
+		}
 
-// yearly
-if(!fullData.year[year]){
+			// yearly
+			if(!fullData.year[year]){
 
-    fullData.year[year] = {
+				fullData.year[year] = {
 
-        data: {
-            "date": year,
-            "time": e.time,
-        },
-    };
+					data: {
+						"date": year,
+						"time": e.time,
+					},
+				};
 
-// full day
-status.fullYear ++;
+			// full day
+			status.fullYear ++;
 
-}else{
+		}else{
 
-    fullData.year[year].data.time += e.time;
-}
+			fullData.year[year].data.time += e.time;
+		}
 
-// total hours
-status.fullTime += e.time;
+			// total hours
+			status.fullTime += e.time;
 
-// technology
-if(!fullData.tech[e.tech]){
+			// technology
+			if(!fullData.tech[e.tech]){
 
-    fullData.tech[e.tech] = {
+				fullData.tech[e.tech] = {
 
-        data: {
-            "tech": e.tech,
-            "time": e.time,
-        }
-    };
+					data: {
+						"tech": e.tech,
+						"time": e.time,
+					}
+				};
 
-// full technology
-status.fullTech.push(e.tech);
+			// full technology
+			status.fullTech.push(e.tech);
 
-}else{
+		}else{
 
-    fullData.tech[e.tech].data.time += e.time;
-}
+			fullData.tech[e.tech].data.time += e.time;
+		}
 
-// Project
-if(!fullData.proj[e.project]){
+			// Project
+			if(!fullData.proj[e.project]){
 
-    fullData.proj[e.project] = {
+				fullData.proj[e.project] = {
 
-        data: {
-            "date": e.project,
-            "time": e.time,
-        },
-        tech:{},
-    };
+					data: {
+						"date": e.project,
+						"time": e.time,
+					},
+					tech:{},
+				};
 
-// full proj
-status.fullProj.push(e.project);
+			// full proj
+			status.fullProj.push(e.project);
 
-}else{
+		}else{
 
-    fullData.proj[e.project].data.time += e.time;
-}
+			fullData.proj[e.project].data.time += e.time;
+		}
 
-// technology per Project
-if (!fullData.proj[e.project].tech[e.tech]) {
+			// technology per project
+			if (!fullData.proj[e.project].tech[e.tech]) {
 
-    fullData.proj[e.project].tech[e.tech] = {
+				fullData.proj[e.project].tech[e.tech] = {
 
-        "tech": e.tech,
-        "time": e.time,
-        "date": day,
-    };
+					"tech": e.tech,
+					"time": e.time,
+					"date": day,
+				};
 
-} else {
+			} else {
 
-    fullData.proj[e.project].tech[e.tech].time += e.time;
-}
+				fullData.proj[e.project].tech[e.tech].time += e.time;
+			}
 
-// project per day
-if (!fullData.day[day].proj[e.project]) {
+			// project per day
+			if (!fullData.day[day].proj[e.project]) {
 
-    fullData.day[day].proj[e.project] = {
+				fullData.day[day].proj[e.project] = {
 
-        "proj": e.project,
-        "time": e.time,
-        "date": day,
-    };
+					"proj": e.project,
+					"time": e.time,
+					"date": day,
+				};
 
-} else {
+			} else {
 
-    fullData.day[day].proj[e.project].time += e.time;
-}
+				fullData.day[day].proj[e.project].time += e.time;
+			}
 
-// technology per day
-if (!fullData.day[day].tech[e.tech]) {
+			// technology per day
+			if (!fullData.day[day].tech[e.tech]) {
 
-    fullData.day[day].tech[e.tech] = {
+				fullData.day[day].tech[e.tech] = {
 
-        "tech": e.tech,
-        "time": e.time,
-        "date": day,
-    };
+					"tech": e.tech,
+					"time": e.time,
+					"date": day,
+				};
 
-} else {
+			} else {
 
-    fullData.day[day].tech[e.tech].time += e.time;
-}
-}
-});
+				fullData.day[day].tech[e.tech].time += e.time;
+			}
+		}
+	});
 
-// STATUS //
-// version
-document.getElementById('version').innerHTML = "Sublime V." + sttsObject[0].version;
+	// STATUS //
+	// version
+	document.getElementById('version').innerHTML = "Sublime V." + sttsObject[0].version;
 
-// arch
-document.getElementById('arch').innerHTML = sttsObject[0].arch + " Archteture";
+	// arch
+	document.getElementById('arch').innerHTML = sttsObject[0].arch + " Archteture";
 
-// platform
-document.getElementById('platform').innerHTML = sttsObject[0].platform + " Platform";
+	// platform
+	document.getElementById('platform').innerHTML = sttsObject[0].platform + " Platform";
 
-// total de horas
-document.getElementById('fullTime').innerHTML = (status.fullTime / 3600).toFixed(2) + " Hours";
+	// total de horas
+	document.getElementById('fullTime').innerHTML = (status.fullTime / 3600).toFixed(2) + " Hours";
 
-// total de dias
-document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
+	// total de dias
+	document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
 
-// total de meses
-document.getElementById('fullMonth').innerHTML = status.fullMonth + "  Months";
+	// total de meses
+	document.getElementById('fullMonth').innerHTML = status.fullMonth + "  Months";
 
-// total de anos
-document.getElementById('fullYear').innerHTML = status.fullYear + "  Years";
+	// total de anos
+	document.getElementById('fullYear').innerHTML = status.fullYear + "  Years";
 
-// total de projetos
-document.getElementById('fullProj').innerHTML = status.fullProj.length + "  Projects";
+	// total de projetos
+	document.getElementById('fullProj').innerHTML = status.fullProj.length + "  Projects";
 
-// total de tecnologias
-document.getElementById('fullTech').innerHTML = status.fullTech.length + " Technolgies";
+	// total de tecnologias
+	document.getElementById('fullTech').innerHTML = status.fullTech.length + " Technolgies";
 
-// PROJECTS BY DAY //
-let projDayGraph = {
+	// PROJECTS BY DAY //
+	let projDayGraph = {
 
-    legend:{data:['Total Hours'],x:'center',},
-    tooltip:{trigger:'axis'},
-    calculable: true,
-    xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
-    yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-    series:[{name:'Total Hours',type:'line',data:[]}],
-};
+		legend:{data:['Total Hours'],x:'center',},
+		tooltip:{trigger:'axis'},
+		calculable: true,
+		xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
+		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
+		series:[{name:'Total Hours',type:'line',data:[]}],
+	};
 
-// adjust data for make the graphic
-Object.keys(fullData.day).forEach(function(e, i) {
+	// adjust data for make the graphic
+	Object.keys(fullData.day).forEach(function(e, i) {
 
-// adjust the quantity of days that will appear
-if (status.fullDay < limitDay || i >= status.fullDay - limitDay) {
+		// adjust the quantity of days that will appear
+		if (status.fullDay < limitDay || i >= status.fullDay - limitDay) {
 
-// insert the date
-projDayGraph.xAxis[0].data.push(fullData.day[e].data.date);
+			// insert the date
+			projDayGraph.xAxis[0].data.push(fullData.day[e].data.date);
 
-// insert the time
-projDayGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
+			// insert the time
+			projDayGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
 
-// projects per day
-let s = fullData.day[e].proj;
+			// projects per day
+			let s = fullData.day[e].proj;
 
-// make the graphic of projects per day
-Object.keys(s).forEach(function(e, i) {
+			// make the graphic of projects per day
+			Object.keys(s).forEach(function(e, i) {
 
-    let tt = findValue(projDayGraph.series, "name", e);
+				let tt = findValue(projDayGraph.series, "name", e);
 
-    if (!tt) {
+				if (!tt) {
 
-        projDayGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
+					projDayGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
 
-    } else {
+				} else {
 
-        projDayGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
-    }
-});
+					projDayGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+				}
+			});
 
-// insert zero
-status.fullProj.forEach(function(e, i) {
+			// insert zero
+			status.fullProj.forEach(function(e, i) {
 
-    let tt = findValue(projDayGraph.series, "name", e);
+				let tt = findValue(projDayGraph.series, "name", e);
 
-    if (tt) {
+				if (tt) {
 
-        if(projDayGraph.series[tt].data.length < projDayGraph.xAxis[0].data.length) {
+					if(projDayGraph.series[tt].data.length < projDayGraph.xAxis[0].data.length) {
 
-            projDayGraph.series[tt].data.push(0);
-        }
-    } else {
+						projDayGraph.series[tt].data.push(0);
+					}
+				} else {
 
-        projDayGraph.series.push({name: e, data:[0], type: 'bar'} );
-    }
-});
+					projDayGraph.series.push({name: e, data:[0], type: 'bar'} );
+				}
+			});
+		}
+	});
 
-}
-});
+	// make the legend
+	status.fullProj.forEach(function(e, i) {
 
-// make the legend
-status.fullProj.forEach(function(e, i) {
+		projDayGraph.legend.data.push(e);
+	});
 
-    projDayGraph.legend.data.push(e);
-});
+	// show the graphic
+	var myChart = echarts.init(document.getElementById('projDayGraph'));
+	myChart.setOption(projDayGraph);
 
-// show the graphic
-var myChart = echarts.init(document.getElementById('projDayGraph'));
-myChart.setOption(projDayGraph);
+	// TECHNOLOGIES BY DAY //
+	let techDayGraph = {
 
-// TECHNOLOGIES BY DAY //
-let techDayGraph = {
+		legend:{data:['Total Hours'],x:'center'},
+		tooltip:{trigger:'axis'},
+		calculable: true,
+		xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
+		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
+		series:[{name:'Total Hours',type:'bar', data:[]}],
+	};
 
-    legend:{data:['Total Hours'],x:'center'},
-    tooltip:{trigger:'axis'},
-    calculable: true,
-    xAxis:[{name:'[Day]', type:'category', boundaryGap:true, data:[]}],
-    yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-    series:[{name:'Total Hours',type:'bar', data:[]}],
-};
+	// adjust data for tech by day graphic
+	Object.keys(fullData.day).forEach(function(e, i) {
 
-// ajusta os dados para o gráfico (day)
-Object.keys(fullData.day).forEach(function(e, i) {
+		// adjust the quantity of days that will appear
+		if (status.fullDay < limitDayTech || i >= status.fullDay - limitDayTech) {
 
-// adjust the quantity of days that will appear
-if (status.fullDay < limitDayTech || i >= status.fullDay - limitDayTech) {
+			// insert days
+			techDayGraph.xAxis[0].data.push(fullData.day[e].data.date);
 
-// insere os dias
-techDayGraph.xAxis[0].data.push(fullData.day[e].data.date);
+			// insert hours
+			techDayGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
 
-// insere as horas
-techDayGraph.series[0].data.push((fullData.day[e].data.time / 3600).toFixed(2));
+			// insert projects in graphic day
+			let s = fullData.day[e].tech;
 
-// Insere projetos no gráfico de dia.
-let s = fullData.day[e].tech; // igual a um dia.
+			// mount tech by day
+			Object.keys(s).forEach(function(e, i) {
 
-// monta o gráfico de projetos por dia
-Object.keys(s).forEach(function(e, i) {
+				let tt = findValue(techDayGraph.series, "name", e);
 
-    let tt = findValue(techDayGraph.series, "name", e);
+				if (!tt) {
 
-    if (!tt) {
+					techDayGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
 
-        techDayGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
+				} else {
 
-    } else {
+					techDayGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+				}
+			});
 
-        techDayGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
-    }
-});
+			// insert zero
+			status.fullTech.forEach(function(e, i) {
 
-// insere zero
-status.fullTech.forEach(function(e, i) {
+				let tt = findValue(techDayGraph.series, "name", e);
 
-    let tt = findValue(techDayGraph.series, "name", e);
+				if (tt) {
 
-    if (tt) {
+					if(techDayGraph.series[tt].data.length < techDayGraph.xAxis[0].data.length) {
 
-        if(techDayGraph.series[tt].data.length < techDayGraph.xAxis[0].data.length) {
+						techDayGraph.series[tt].data.push(0);
+					}
+				} else {
 
-            techDayGraph.series[tt].data.push(0);
-        }
-    } else {
+					techDayGraph.series.push({name: e, data:[0], type: 'bar'} );
+				}
+			});
+		}
+	});
 
-        techDayGraph.series.push({name: e, data:[0], type: 'bar'} );
-    }
-});
-}
-});
+	// make the legend of day graphic
+	status.fullTech.forEach(function(e, i) {
 
-// make the legend of day graphic
-status.fullTech.forEach(function(e, i) {
+		techDayGraph.legend.data.push(e);
+	});
 
-    techDayGraph.legend.data.push(e);
-});
+	// do the graphic and show
+	var myChart = echarts.init(document.getElementById('techDayGraph'));
+	myChart.setOption(techDayGraph);
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('techDayGraph'));
-myChart.setOption(techDayGraph);
+	// TECHNOLOGY BY PROJECT //
+	let techProjGraph = {
+		legend:{data:['Total Hours'],x:'center'},
+		tooltip:{trigger:'axis'},
+		calculable: true,
+		xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
+		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
+		series:[{name:'Total Hours',type:'bar',data:[]}],
+	};
 
-// TECHNOLOGY BY PROJECT //
-let techProjGraph = {
-    legend:{data:['Total Hours'],x:'center'},
-    tooltip:{trigger:'axis'},
-    calculable: true,
-    xAxis:[{name:'[Project]', type:'category', boundaryGap:true, data:[]}],
-    yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-    series:[{name:'Total Hours',type:'bar',data:[]}],
-};
+			// set top tech
+			var topTech = {1:'', 2:'', 3:''};
 
-// ajusta os dados para o gráfico (day)
-Object.keys(fullData.proj).forEach(function(e, i) {
+	// adjust data for tech by proj graphic
+	Object.keys(fullData.proj).forEach(function(e, i) {
 
-    if (status.fullProj.length < limitTechProj || i >= status.fullProj.length - limitTechProj) {
+		if (status.fullProj.length < limitTechProj || i >= status.fullProj.length - limitTechProj) {
 
-// insere os dias
-techProjGraph.xAxis[0].data.push(fullData.proj[e].data.date);
 
-// insere as horas
-techProjGraph.series[0].data.push((fullData.proj[e].data.time / 3600).toFixed(2));
 
-// Insere projetos no gráfico de dia.
-let s = fullData.proj[e].tech; // igual um projeto
 
-// monta o gráfico de projetos por dia
-Object.keys(s).forEach(function(e, i) {
+			// insert proj
+			techProjGraph.xAxis[0].data.push(fullData.proj[e].data.date);
 
-    let tt = findValue(techProjGraph.series, "name", e);
+			// insert hours
+			techProjGraph.series[0].data.push((fullData.proj[e].data.time / 3600).toFixed(2));
 
-    if (!tt) {
+			// insert proj in tech
+			let s = fullData.proj[e].tech;
 
-        techProjGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
+			Object.keys(s).forEach(function(e, i) {
 
-    } else {
+				let tt = findValue(techProjGraph.series, "name", e);
 
-        techProjGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
-    }
-});
+				if (!tt) {
 
-// insere zero
-status.fullTech.forEach(function(e, i) {
+					techProjGraph.series.push({name: e, data:[ (s[e].time /3600).toFixed(2) ], type: 'bar'} );
 
-    let tt = findValue(techProjGraph.series, "name", e);
+				} else {
 
-    if (tt) {
+					techProjGraph.series[tt].data.push((s[e].time /3600).toFixed(2));
+				}
+			});
 
-        if(techProjGraph.series[tt].data.length < techProjGraph.xAxis[0].data.length) {
+			// insert zero
+			status.fullTech.forEach(function(e, i) {
 
-            techProjGraph.series[tt].data.push(0);
-        }
-    } else {
+				let tt = findValue(techProjGraph.series, "name", e);
 
-        techProjGraph.series.push({name: e, data:[0], type: 'bar'} );
-    }
-});
-}
-});
+				if (tt) {
 
-// make the legend of day graphic
-status.fullTech.forEach(function(e, i) {
+					if(techProjGraph.series[tt].data.length < techProjGraph.xAxis[0].data.length) {
 
-    techProjGraph.legend.data.push(e);
-});
+						techProjGraph.series[tt].data.push(0);
+					}
+				} else {
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('techProjGraph'));
-myChart.setOption(techProjGraph);
+					techProjGraph.series.push({name: e, data:[0], type: 'bar'} );
+				}
+			});
+		}
+	});
 
-// ### config PROJECT GRAPHIC ### //
-let projGraph = {
-    title:{x:'center'},
-    legend:{orient:'horizontal',data:[],x:'center'},
-    tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
-    calculable: true,
-    series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
-}
+	// make the legend of tech graphic
+	status.fullTech.forEach(function(e, i) {
 
-// ajusta os dados para o gráfico de linha
-Object.keys(fullData.proj).forEach(function(e, i) {
+		techProjGraph.legend.data.push(e);
+	});
 
-    projGraph.series[0].data.push({value:(fullData.proj[e].data.time / 3600).toFixed(2), name:e});
-    projGraph.legend.data.push(e);
-});
+	// mount graphic and show
+	var myChart = echarts.init(document.getElementById('techProjGraph'));
+	myChart.setOption(techProjGraph);
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('projGraph'));
-myChart.setOption(projGraph);
+	// PROJECT GRAPHIC  //
+	let projGraph = {
+		title:{x:'center'},
+		legend:{orient:'horizontal',data:[],x:'center'},
+		tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
+		calculable: true,
+		series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
+	}
 
-// ### Config TECHNOLOGY GRAPHIC ### //
-let techGraph = {
-    title:{x:'center'},
-    legend:{orient:'horizontal',data:[],x:'center'},
-    tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
-    calculable: true,
-    series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
-}
+	// adjust data for proj graphic
+	Object.keys(fullData.proj).forEach(function(e, i) {
 
-// ajusta os dados para o gráfico
-Object.keys(fullData.tech).forEach(function(e, i) {
+		projGraph.series[0].data.push({value:(fullData.proj[e].data.time / 3600).toFixed(2), name:e});
+		projGraph.legend.data.push(e);
+	});
 
-    techGraph.series[0].data.push({value:(fullData.tech[e].data.time / 3600).toFixed(2), name:e});
-    techGraph.legend.data.push(e);
-});
+	// mount and show
+	var myChart = echarts.init(document.getElementById('projGraph'));
+	myChart.setOption(projGraph);
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('techGraph'));
-myChart.setOption(techGraph);
+	// TECHNOLOGY GRAPHIC //
+	let techGraph = {
+		title:{x:'center'},
+		legend:{orient:'horizontal',data:[],x:'center'},
+		tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
+		calculable: true,
+		series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
+	}
 
-// MONTH GRAPHIC  //
-let monthGraph = {
-    title:{subtext:'Total hours worked in month', x:'center'},
-    legend:{data:[],x:'left'},
-    tooltip:{trigger:'axis'},
-    calculable: true,
-    xAxis:[{name:'[Month]', type:'category', boundaryGap:true, data:[]}],
-    yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-    series:[{name:'Worked Hours',type:'line',data:[]}],
-}
+	// adjust data for tech graphic
+	Object.keys(fullData.tech).forEach(function(e, i) {
 
-// ajusta os dados para o gráfico de linha
-Object.keys(fullData.month).forEach(function(e, i) {
+		techGraph.series[0].data.push({value:(fullData.tech[e].data.time / 3600).toFixed(2), name:e});
+		techGraph.legend.data.push(e);
+	});
 
-// adjust the quantity of months that will appear
-if (status.fullMonth < limitMonth || i >= status.fullMonth - limitMonth) {
+	// mount and show
+	var myChart = echarts.init(document.getElementById('techGraph'));
+	myChart.setOption(techGraph);
 
-// insere os dias
-monthGraph.xAxis[0].data.push(fullData.month[e].data.date);
-// insere as horas
-monthGraph.series[0].data.push((fullData.month[e].data.time / 3600).toFixed(2));
+	// MONTH GRAPHIC  //
+	let monthGraph = {
+		title:{subtext:'Total hours worked in month', x:'center'},
+		legend:{data:[],x:'left'},
+		tooltip:{trigger:'axis'},
+		calculable: true,
+		xAxis:[{name:'[Month]', type:'category', boundaryGap:true, data:[]}],
+		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
+		series:[{name:'Worked Hours',type:'line',data:[]}],
+	}
 
-}
-});
+	// adjust data for month graphic
+	Object.keys(fullData.month).forEach(function(e, i) {
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('monthGraph'));
-myChart.setOption(monthGraph);
+		// adjust the quantity of months that will appear
+		if (status.fullMonth < limitMonth || i >= status.fullMonth - limitMonth) {
 
-// YEAR GRAPHIC //
-let yearGraph = {
-    title:{subtext:'Total hours worked in year', x:'center'},
-    legend:{data:[],x:'left'},
-    tooltip:{trigger:'axis'},
-    calculable: true,
-    xAxis:[{name:'[Year]', type:'category', boundaryGap:true, data:[]}],
-    yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-    series:[{name:'Worked Hours',type:'bar',data:[]}],
-}
+			// insert months
+			monthGraph.xAxis[0].data.push(fullData.month[e].data.date);
 
-// adjust data for graphic
-Object.keys(fullData.year).forEach(function(e, i) {
+			// insert hours
+			monthGraph.series[0].data.push((fullData.month[e].data.time / 3600).toFixed(2));
 
-// adjust the quantity of years that will appear
-if (status.fullYear < limitYear || i >= status.fullYear - limitYear) {
+		}
+	});
 
-// insert the years
-yearGraph.xAxis[0].data.push(fullData.year[e].data.date);
+	// mount and show
+	var myChart = echarts.init(document.getElementById('monthGraph'));
+	myChart.setOption(monthGraph);
 
-// insert hours
-yearGraph.series[0].data.push((fullData.year[e].data.time / 3600).toFixed(2));
-}
-});
+	// YEAR GRAPHIC //
+	let yearGraph = {
+		title:{subtext:'Total hours worked in year', x:'center'},
+		legend:{data:[],x:'left'},
+		tooltip:{trigger:'axis'},
+		calculable: true,
+		xAxis:[{name:'[Year]', type:'category', boundaryGap:true, data:[]}],
+		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
+		series:[{name:'Worked Hours',type:'bar',data:[]}],
+	}
 
-// apresenta o gráfico na view
-var myChart = echarts.init(document.getElementById('yearGraph'));
-myChart.setOption(yearGraph);
+	// adjust data for yaer graphic
+	Object.keys(fullData.year).forEach(function(e, i) {
+
+		// adjust the quantity of years that will appear
+		if (status.fullYear < limitYear || i >= status.fullYear - limitYear) {
+
+			// insert the years
+			yearGraph.xAxis[0].data.push(fullData.year[e].data.date);
+
+			// insert hours
+			yearGraph.series[0].data.push((fullData.year[e].data.time / 3600).toFixed(2));
+		}
+	});
+
+	// mount and show
+	var myChart = echarts.init(document.getElementById('yearGraph'));
+	myChart.setOption(yearGraph);
 
 });

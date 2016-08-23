@@ -1,9 +1,9 @@
 body{
-  background-color: whitesmoke;
+  background-color: rgb(247,247,247);
 }
 
 .text-gray{
-  color: #505050;
+  color: rgb(98,98,98);
 }
 
 .graphic {
@@ -42,4 +42,12 @@ body{
 
 .menu:hover {
   color: #aa4400;
+}
+
+#btnModal {
+  padding-top: 5px;
+}
+
+.footer {
+  text-align:center;
 }
