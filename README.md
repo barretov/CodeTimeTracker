@@ -18,7 +18,8 @@ Dashboard
 
     To open dashboard can:
 
-        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker' and choose the option "CondeTimeTracker: Open Dashboard".
+        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
+        and choose the option "CondeTimeTracker: Open Dashboard".
 
         or.
 
@@ -50,7 +51,8 @@ Dashboard
 
         Windows:
 
-        On Windows, probably the easiest is probably to create a special shortcut icon which has added the flag given above (right-click on shortcut -> properties -> target).
+        On Windows, probably the easiest is probably to create a special shortcut icon which
+        has added the flag given above (right-click on shortcut -> properties -> target).
 
         Example: chrome.exe --allow-file-access-from-files
 
@@ -64,7 +66,8 @@ Delete Data
 
     To delete tracker data you have do:
 
-        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker' and choose the option "CondeTimeTracker: Delete tracker data".
+        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
+        and choose the option "CondeTimeTracker: Delete tracker data".
 
         or.
 
