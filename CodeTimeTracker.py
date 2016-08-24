@@ -2,6 +2,7 @@ import sublime
 import sublime_plugin
 import webbrowser
 import os
+import time
 from datetime import datetime
 
 class CodeTimeTracker (sublime_plugin.EventListener):
