@@ -9,6 +9,7 @@
             "author": "Victor Eduardo Barreto",
             "readme": "https://github.com/victoreduardobarreto/CodeTimeTracker/blob/master/README.md",
             "labels": ["Time Tracker"],
+            "license": "Apache 2.0",
             "releases": [
                 {
                     "sublime_text": ">=3000",
