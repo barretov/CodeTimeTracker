@@ -1,16 +1,11 @@
 import sublime
 import sublime_plugin
-import time
-import datetime
-import json
 import webbrowser
 import os
 from datetime import datetime
-from time import gmtime, strftime
 
 class CodeTimeTracker (sublime_plugin.EventListener):
 
-    date = datetime.now()
     time_start = time.time()
     time_save = 300 # time for save seconds
     time_afk = 2400 # time to verify if sublime is inactive (40 minutes)
@@ -114,7 +109,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         now_time = int(time.time()) - int(self.time_start)
 
         with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(self.date) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
+            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
 
         # reset time variables
         self.time_start = time.time()

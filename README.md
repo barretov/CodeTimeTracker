@@ -1,13 +1,13 @@
 # CodeTimeTracker
-Sublime plugin for count the time spend in your projects
+Sublime plugin to measure the time spent on projects
 
 --------------------------------------------------------------
 
 Warning
 
-    This plugin meansure the time spend in projects, then you have to working with sublime projects.
+    This plugin measure the time spent on projects, then you have to working with sublime projects.
 
-    To do a project in sublime text you have to:
+    To do a project on Sublime-Text you have to:
 
         1- Go to menu 'File'->'Open Folder...' choose the project folder.
         2- Go to menu 'Project'->'Save Project As...' and save the project.
@@ -16,7 +16,7 @@ Warning
 
 Dashboard
 
-    To open dashboard can:
+    To open dashboard:
 
         - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
         and choose the option "CondeTimeTracker: Open Dashboard".
