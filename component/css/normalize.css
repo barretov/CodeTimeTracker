@@ -51,6 +51,10 @@ body{
   padding-left: 20px;
 }
 
+#subTitle-mobile {
+  margin-top: -20px;
+}
+
 #imgDash {
   // // overflow: hidden;
   // margin-right: 300px;
@@ -60,6 +64,10 @@ body{
   background-image: url(../img/dashboard.png);
   background-size: 1500px 850px;
   height: 850px;
-  background-position: -100px 10px;
+  background-position: -100px 20px;
   background-repeat: no-repeat;
+}
+
+.font-12 {
+  font-size: 16px;
 }

@@ -25,13 +25,15 @@
                         <h3>
                             <img class="icon" src="component/img/icon.svg" class="img-resposive">
                             <span>CodeTimeTracker</span>
-                            <span id="subTitle" class="text-orange hidden-xs hidden-sm">Sublime plugin for count the time spend in your projects</span>
+                            <span id="subTitle" class="text-orange hidden-xs hidden-sm">Sublime plugin to measure the time spent on projects</span>
                         </h3>
 
                     </span>
 
-                    <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
-                        <span id="subTitle" class="text-justify">Sublime plugin for count the time spend in your projects</span>
+                    <div id="subTitle-mobile" class="col-xs-12 col-sm-12 hidden-md hidden-lg row">
+                        <span  class="text-left text-orange">
+                            Sublime plugin to measure the time spent on projects
+                        </span>
                     </div>
 
                 </div>
@@ -46,12 +48,15 @@
                         CodeTimeTracker
                     </h4>
 
-                    <legend>About</legend>
+                    <legend>Menu</legend>
 
                     <ul class="nav nav-sidebar text-gray">
                         <strong>
-                            <li> <span>CodeTimeTracker V.1.0.0</span></li>
-                            <li> <span>github</span></li>
+                            <li><a href="#aAbout">About</a></li>
+                            <li><a href="#aGraphics">Graphics</a></li>
+                            <li><a href="#aConfiguration">Configuration</a></li>
+                            <li><a href="#ainstallation">installation</a></li>
+                            <li> <span><a href="https://github.com/victoreduardobarreto/CodeTimeTracker" target="blank">github</a></span></li>
                         </strong>
                     </ul>
 
@@ -63,54 +68,104 @@
                 <!-- dashboard -->
                 <div id="imgDash" class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
 
-                <legend>Dashboard</legend>
+                    <legend id="aAbout">About</legend>
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p class="text-justify text-orange font-12">
+                        You would like to know how many time you spend on your projects, this plugin can help you.
 
-                    <span>
+                        <br>
 
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        CodeTimeTracker has many graphics to show stats about your behavior, as example how many time you spend coding during the day, month or year and what technology you are using.
+                    </p>
 
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <legend id="aGraphics">Graphics</legend>
 
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <p class="text-justify text-orange font-12">
+                        CodeTimeTracker have many graphics to show the details of each day, project or technology.
 
-                    </span>
+                        <br>
 
-                    </div>
+                        Actually exist the below graphics:
+
+                        <ul>
+                            <li>Projects by Day</li>
+                            <li>Technologies by Day</li>
+                            <li>Technologies by Project</li>
+                            <li>Total Hours by Project</li>
+                            <li>Total Hours by Technology</li>
+                            <li>Hours by Month</li>
+                            <li>Hours by Year</li>
+                        </ul>
+
+                    </p>
+
+
+                    <legend id="aConfiguration">Configuration</legend>
+
+                    <p class="text-justify text-orange font-12">
+                        CodeTimeTracker has a configuration for limit of data that will appear in graphics, as example 3 days or 2 projects etc...
+
+                        <br>
+
+                        The actually configuration are:
+
+                        <ul>
+                            <li>Limit of days to Projects by Day</li>
+                            <li>Limit of days to Technology by Day</li>
+                            <li>Limit of projects to Technology by Project</li>
+                            <li>Limit of months to Hours by Month </li>
+                            <li>Limit of years to Hours by Year </li>
+                        </ul>
+                    </p>
+
+                    <legend id="aInstallation">Installation</legend>
+
+                    <p class="text-justify text-orange font-12">
+                        Install is easy, you must have package-control installed.
+                        <br>
+                        If you don't have package-control, you can see how to install here: <a href="https://packagecontrol.io/installation" target="blank">Package Control</a>
+                        <br>
+                        <br>
+                        To install CodeTimeTracker on Sublime-Text:
+
+                        <ul>
+                            <li>Press: Ctrl+Shift+p</li>
+                            <li>Type: Install package</li>
+                            <li>Type: CodeTimeTracker and press enter</li>
+                        </ul>
+                    </p>
 
                 </div>
-
             </div>
 
+
         </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-        <footer class="footer">
-        </footer>
 
     </div>
 
-    <script src="component/js/jquery.min.js"></script>
-    <script src="component/js/bootstrap.min.js"></script>
-    <script src="component/js/functions.js"></script>
+</div>
+</div>
+
+<hr>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <footer class="footer">
+    </footer>
+
+</div>
+
+<script src="component/js/jquery.min.js"></script>
+<script src="component/js/bootstrap.min.js"></script>
+<script src="component/js/functions.js"></script>
+
+</section>
+
+<section>
+
+    <footer class="footer">
+        CodeTimeTracker V1.0.0
+    </footer>
 
 </section>
 
