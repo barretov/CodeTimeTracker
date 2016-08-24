@@ -6,7 +6,7 @@ body{
   color: rgb(98,98,98);
 }
 
-.text-orange{
+.text-orange {
   color: #aa4400;
 }
 
@@ -70,4 +70,12 @@ body{
 
 .font-12 {
   font-size: 16px;
+}
+
+a{
+  color: #aa4400;
+}
+
+a:hover {
+  color: rgb(98,98,98);
 }
