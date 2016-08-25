@@ -44,10 +44,10 @@ body{
 
 .footer {
   text-align:center;
+  bottom: 0px;
 }
 
 #subTitle {
-  // font-size: 20px;
   padding-left: 20px;
 }
 
@@ -56,15 +56,9 @@ body{
 }
 
 #imgDash {
-  // // overflow: hidden;
-  // margin-right: 300px;
-  // margin-top: -250px;
-  // margin-left: -350px;
-  // z-index: 0;
   background-image: url(../img/dashboard.png);
-  background-size: 1500px 850px;
-  height: 850px;
-  background-position: -100px 20px;
+  background-size: 1300px 850px;
+  background-position: 0px 20px;
   background-repeat: no-repeat;
 }
 
