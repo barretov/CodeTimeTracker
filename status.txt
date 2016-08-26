@@ -1,0 +1,1 @@
+stts{"version":3114,"arch":"x64","platform":"linux"}
