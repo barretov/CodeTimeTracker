@@ -1,5 +1,5 @@
 console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-console.log("┃                CodeTimeTracker 1.0.0                ┃");
+console.log("┃                CodeTimeTracker 1.0.1                ┃");
 console.log("┠─────────────────────────────────────────────────────┨");
 console.log("┃ github.com/victoreduardobarreto/CodeTimeTracker.git ┃");
 console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
@@ -104,7 +104,8 @@ document.addEventListener('DOMContentLoaded', function(e){
 		('none' == e.project)? e.project = "out project": '';
 
 		// check the extensions to measure better the technologies
-		if(e.tech.length < 5 && e.tech != "none") {
+		// exclude when arrive 'none'extension
+		if(e.tech.length < 5 && e.tech != "none" && e.tech != "") {
 
 			// diary
 			if(!fullData.day[day]){
