@@ -1,5 +1,5 @@
 console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-console.log("┃                CodeTimeTracker 1.0.1                ┃");
+console.log("┃                CodeTimeTracker 1.1.2                ┃");
 console.log("┠─────────────────────────────────────────────────────┨");
 console.log("┃ github.com/victoreduardobarreto/CodeTimeTracker.git ┃");
 console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
@@ -256,32 +256,49 @@ document.addEventListener('DOMContentLoaded', function(e){
 	});
 
 	// STATUS //
+	// total hours
+	document.getElementById('fullTime').innerHTML = (status.fullTime / 3600).toFixed(2);
+
+	// total days
+	document.getElementById('fullDay').innerHTML = status.fullDay;
+
+	// total months
+	document.getElementById('fullMonth').innerHTML = status.fullMonth;
+
+	// total years
+	document.getElementById('fullYear').innerHTML = status.fullYear;
+
+	// total projects
+	document.getElementById('fullProj').innerHTML = status.fullProj.length;
+
+	// total technologies
+	document.getElementById('fullTech').innerHTML = status.fullTech.length;
+
+	// TODO remove //
+	console.log(status.fullTime);
+
+	// AVERAGE //
+	// hours per day
+	document.getElementById('avgHoursDay').innerHTML = ((status.fullTime / 3600) / status.fullDay).toFixed(2);
+
+	// days per months
+	document.getElementById('avgDaysMonths').innerHTML = (status.fullDay / status.fullMonth).toFixed(2);
+
+	// months per years
+	document.getElementById('avgMonthsYears').innerHTML = (status.fullMonth / status.fullYear).toFixed(2);
+
+	// technologies per projects
+	document.getElementById('avgTechProj').innerHTML = (status.fullTech.length / status.fullProj.length).toFixed(2);
+
+	// ABOUT //
 	// version
-	document.getElementById('version').innerHTML = "Sublime V." + sttsObject[0].version;
+	document.getElementById('version').innerHTML = "v." + sttsObject[0].version;
 
 	// arch
-	document.getElementById('arch').innerHTML = sttsObject[0].arch + " Archteture";
+	document.getElementById('arch').innerHTML = sttsObject[0].arch;
 
 	// platform
-	document.getElementById('platform').innerHTML = sttsObject[0].platform + " Platform";
-
-	// total de horas
-	document.getElementById('fullTime').innerHTML = (status.fullTime / 3600).toFixed(2) + " Hours";
-
-	// total de dias
-	document.getElementById('fullDay').innerHTML = status.fullDay + "  Days";
-
-	// total de meses
-	document.getElementById('fullMonth').innerHTML = status.fullMonth + "  Months";
-
-	// total de anos
-	document.getElementById('fullYear').innerHTML = status.fullYear + "  Years";
-
-	// total de projetos
-	document.getElementById('fullProj').innerHTML = status.fullProj.length + "  Projects";
-
-	// total de tecnologias
-	document.getElementById('fullTech').innerHTML = status.fullTech.length + " Technolgies";
+	document.getElementById('platform').innerHTML = sttsObject[0].platform;
 
 	// PROJECTS BY DAY //
 	let projDayGraph = {
@@ -433,16 +450,10 @@ document.addEventListener('DOMContentLoaded', function(e){
 		series:[{name:'Total Hours',type:'bar',data:[]}],
 	};
 
-			// set top tech
-			var topTech = {1:'', 2:'', 3:''};
-
 	// adjust data for tech by proj graphic
 	Object.keys(fullData.proj).forEach(function(e, i) {
 
 		if (status.fullProj.length < limitTechProj || i >= status.fullProj.length - limitTechProj) {
-
-
-
 
 			// insert proj
 			techProjGraph.xAxis[0].data.push(fullData.proj[e].data.date);
@@ -496,13 +507,13 @@ document.addEventListener('DOMContentLoaded', function(e){
 	var myChart = echarts.init(document.getElementById('techProjGraph'));
 	myChart.setOption(techProjGraph);
 
-	// PROJECT GRAPHIC  //
+	// TOTAL HOURS by PROJECT GRAPHIC  //
 	let projGraph = {
 		title:{x:'center'},
 		legend:{orient:'horizontal',data:[],x:'center'},
 		tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
 		calculable: true,
-		series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
+		series:[{name:'Project',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
 	}
 
 	// adjust data for proj graphic
@@ -516,13 +527,13 @@ document.addEventListener('DOMContentLoaded', function(e){
 	var myChart = echarts.init(document.getElementById('projGraph'));
 	myChart.setOption(projGraph);
 
-	// TECHNOLOGY GRAPHIC //
+	// TOTAL HOURS by TECHNOLOGY GRAPHIC //
 	let techGraph = {
 		title:{x:'center'},
 		legend:{orient:'horizontal',data:[],x:'center'},
 		tooltip:{trigger:'item',formatter:"{a} <br/>{b} : {c} ({d}%)"},
 		calculable: true,
-		series:[{name:'Total Hours',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
+		series:[{name:'Technology',type:'pie',radius:'55%',center:['50%','60%'],roseType:'area',data:[]}],
 	}
 
 	// adjust data for tech graphic
@@ -544,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 		calculable: true,
 		xAxis:[{name:'[Month]', type:'category', boundaryGap:true, data:[]}],
 		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-		series:[{name:'Worked Hours',type:'line',data:[]}],
+		series:[{name:'Total Hours',type:'line',data:[]}],
 	}
 
 	// adjust data for month graphic
@@ -574,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 		calculable: true,
 		xAxis:[{name:'[Year]', type:'category', boundaryGap:true, data:[]}],
 		yAxis:[{type:'value',axisLabel:{formatter:'{value} hrs'}}],
-		series:[{name:'Worked Hours',type:'bar',data:[]}],
+		series:[{name:'Total Hours',type:'bar',data:[]}],
 	}
 
 	// adjust data for yaer graphic

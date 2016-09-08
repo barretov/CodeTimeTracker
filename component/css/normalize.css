@@ -51,3 +51,15 @@ body{
 .footer {
   text-align:center;
 }
+
+.bold {
+  font-weight: bold;
+}
+
+td {
+  padding-left: 5px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
