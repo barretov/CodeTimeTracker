@@ -1,5 +1,5 @@
 console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-console.log("┃                CodeTimeTracker 1.1.2                ┃");
+console.log("┃                CodeTimeTracker 1.1.3                ┃");
 console.log("┠─────────────────────────────────────────────────────┨");
 console.log("┃ github.com/victoreduardobarreto/CodeTimeTracker.git ┃");
 console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");

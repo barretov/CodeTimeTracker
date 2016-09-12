@@ -20,6 +20,9 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     # show init message
     sublime.active_window().status_message("     | CodeTimeTracker :: Started |")
 
+    # show console message
+    print("............::::::::| CodeTimeTracker -- Started |::::::::............")
+
     #  listeners  #
     def on_activated(self, view):
         self.handle_active()
