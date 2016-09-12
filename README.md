@@ -1,11 +1,11 @@
 # CodeTimeTracker
-Sublime plugin to measure the time spent on projects
+Sublime plug-in to measure the time spent on projects
 
 --------------------------------------------------------------
 
 Warning
 
-    This plugin measure the time spent on projects, then you have to working with sublime projects.
+    This plug-in measure the time spent on projects, then you have to working with sublime projects.
 
     To do a project on Sublime-Text you have to:
 
@@ -18,12 +18,12 @@ Dashboard
 
     To open dashboard:
 
-        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
+        - Use command (Ctrl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
         and choose the option "CondeTimeTracker: Open Dashboard".
 
         or.
 
-        - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Open Dasshboard'.
+        - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Open Dashboard'.
 
     FireFox
     =======
@@ -66,16 +66,17 @@ Delete Data
 
     To delete tracker data you have do:
 
-        - Use command (Crtl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
+        - Use command (Ctrl+Shift+p) and type 'CodeTimeTracker' or 'tracker'
         and choose the option "CondeTimeTracker: Delete tracker data".
 
         or.
 
         - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Delete tracker data'.
 
-Comming Soon
+Coming Soon
 
     - Option for choose technologies to appear in the graphics.
     - Maybe git integration for merge tracker data, case you use CodeTimeTracker in another computer.
-    - Top 3 techonogies.
+    - Top 3 technologies.
     - Top 3 projects.
+    - Behavior
