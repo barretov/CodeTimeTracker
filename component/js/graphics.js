@@ -1,14 +1,8 @@
-console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-console.log("┃               CodeTimeTracker v1.2.5                ┃");
-console.log("┠─────────────────────────────────────────────────────┨");
-console.log("┃ github.com/victoreduardobarreto/CodeTimeTracker.git ┃");
-console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-
 document.addEventListener('DOMContentLoaded', function(e){
 
 	// get data archive.
 	let reqData = new XMLHttpRequest();
-	reqData.open('get', 'data.txt', false);
+	reqData.open('get', '../User/CodeTimeTracker/data.txt', false);
 
 	reqData.onload = function(e){
 		data = e.target.response;
@@ -100,9 +94,6 @@ document.addEventListener('DOMContentLoaded', function(e){
 		let year = day.slice(0,4);
 
 		// treats data
-		// adjust for working out project
-		('none' == e.project)? e.project = "out project": '';
-
 		// check the extensions to measure better the technologies
 		// exclude when arrive 'none'extension
 		if(e.tech.length < 5 && e.tech != "none" && e.tech != "") {
@@ -274,9 +265,6 @@ document.addEventListener('DOMContentLoaded', function(e){
 	// total technologies
 	document.getElementById('fullTech').innerHTML = status.fullTech.length;
 
-	// TODO remove //
-	console.log(status.fullTime);
-
 	// AVERAGE //
 	// hours per day
 	document.getElementById('avgHoursDay').innerHTML = ((status.fullTime / 3600) / status.fullDay).toFixed(2);
@@ -291,8 +279,11 @@ document.addEventListener('DOMContentLoaded', function(e){
 	document.getElementById('avgTechProj').innerHTML = (status.fullTech.length / status.fullProj.length).toFixed(2);
 
 	// ABOUT //
-	// version
-	document.getElementById('version').innerHTML = "v." + sttsObject[0].version;
+	// codetimetracker version
+	document.getElementById('cttVersion').innerHTML = "v." + sttsObject[0].cttVersion;
+
+	// sublime version
+	document.getElementById('stVersion').innerHTML = "v." + sttsObject[0].stVersion;
 
 	// arch
 	document.getElementById('arch').innerHTML = sttsObject[0].arch;
@@ -606,4 +597,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 	var myChart = echarts.init(document.getElementById('yearGraph'));
 	myChart.setOption(yearGraph);
 
+	console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	console.log("┃               CodeTimeTracker v" + sttsObject[0].cttVersion + "                ┃");
+	console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 });

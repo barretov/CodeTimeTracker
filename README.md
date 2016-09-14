@@ -25,43 +25,6 @@ Dashboard
 
         - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Open Dashboard'.
 
-    FireFox
-    =======
-
-        Dashboard works fine in FireFox.
-
-    Chrome
-    ======
-
-        If you want open dashboard in google chrome, you have to open the chrome using
-        this command --allow-file-access-from-files
-
-        to do this:
-
-            1- Close all running Chrome instances first.
-
-            2- Start the Chrome executable with a command line flag:
-
-        Linux:
-        Example /usr/bin/chromium-browser --allow-file-access-from-files
-
-        Mac:
-
-        Example: open /Applications/Google\ Chrome.app --args --allow-file-access-from-files
-
-        Windows:
-
-        On Windows, probably the easiest is probably to create a special shortcut icon which
-        has added the flag given above (right-click on shortcut -> properties -> target).
-
-        Example: chrome.exe --allow-file-access-from-files
-
-    Safari
-    ======
-
-        Enable the develop menu using the preferences panel, under Advanced -> "Show develop menu in menu bar"
-        Then from the safari "Develop" menu, select "Disable local file restrictions".
-
 Delete Data
 
     To delete tracker data you have do:
