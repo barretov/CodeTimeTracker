@@ -4,6 +4,9 @@ import webbrowser
 import os
 import time
 from datetime import datetime
+import threading
+import http.server
+import socketserver
 
 class CodeTimeTracker (sublime_plugin.EventListener):
 
@@ -16,6 +19,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     version = sublime.version()
     platform = sublime.platform()
     arch = sublime.arch()
+    server_port = 12345
 
     # show init message
     sublime.active_window().status_message("     | CodeTimeTracker :: Started |")
@@ -123,7 +127,8 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
-        webbrowser.open_new_tab("file://" + os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/index.html")
+        HttpServer().start()
+        webbrowser.open_new_tab("localhost:" + str(CodeTimeTracker.server_port))
 
 # remove file data.
 class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
@@ -131,3 +136,27 @@ class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt")
         sublime.active_window().status_message("     | CodeTimeTracker :: Data deleted |")
+
+# HTTP Server
+class HttpServer(threading.Thread):
+
+    httpd = "none"
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+        os.chdir(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/")
+        handler = http.server.SimpleHTTPRequestHandler
+        self.httpd = socketserver.TCPServer(('', CodeTimeTracker.server_port), handler, bind_and_activate=False)
+
+    def run(self):
+        try:
+            self.httpd.server_bind()
+            self.httpd.server_activate()
+            self.httpd.serve_forever()
+
+        except OSError as error:
+            print("CodeTimeTracker | Http server already started")
+
+        else:
+            self.httpd.server_activate()
