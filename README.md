@@ -25,6 +25,8 @@ Dashboard
 
         - Open menu 'Tools'->'CodeTimeTracker'->'CodeTimeTracker:Open Dashboard'.
 
+        Dashboard will appear in you default browser with the address http://localhost:10123/CodeTimeTracker/
+
 Delete Data
 
     To delete tracker data you have do:
