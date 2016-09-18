@@ -137,7 +137,7 @@ class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         HttpServer().start()
-        webbrowser.open_new_tab("localhost:" + str(CodeTimeTracker.httpServer_port) + "/CodeTimeTracker")
+        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port) + "/CodeTimeTracker")
 
 # remove file data.
 class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
