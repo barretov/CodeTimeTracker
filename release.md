@@ -1,7 +1,6 @@
 
-v1.2.8
+v1.2.9
 
      Changelog
 
-        added http:// before call url. This solve the problem of dashboard on windows.
-            -- Thanks for KingKili.
+        adjust for create status file after update.

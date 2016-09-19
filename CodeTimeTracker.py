@@ -18,7 +18,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     current_project = "none"
     current_technology = "none"
     stVersion = sublime.version()
-    cttVersion = "1.2.5" # current version
+    cttVersion = "1.2.9" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
@@ -85,7 +85,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     # do verification before save
     def pre_save(self):
 
-        # check if have more of one second in archive
+        # check if have more of two second in archive
         if int(time.time()) - int(self.time_start) > 2:
 
             # check if sublime was inactive
@@ -97,9 +97,6 @@ class CodeTimeTracker (sublime_plugin.EventListener):
                 self.time_start = time.time()
                 self.time_inactivity = time.time()
 
-    # save
-    def save_time(self):
-
         # verify if exists the file status
         if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt") is False:
 
@@ -110,6 +107,9 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             # write status file
             with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
                  file.writelines("stts" + "{" + "\"stVersion\"" + ":" + str(self.stVersion) + "," + "\"cttVersion\"" + ":\"" + str(self.cttVersion) + "\","  + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
+
+    # save
+    def save_time(self):
 
         # verify if exists file data
         if os.path.exists(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt") is False:
