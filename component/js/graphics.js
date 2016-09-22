@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 	status.fullYear = 0;
 	status.fullTech = [];
 	status.fullProj = [];
+	status.fullKey = 0;
 
 	// init limiters with default value
 	let limitDay = 31;
@@ -243,6 +244,9 @@ document.addEventListener('DOMContentLoaded', function(e){
 
 				fullData.day[day].tech[e.tech].time += e.time;
 			}
+
+			// keypresses
+			(e.key)? status.fullKey += e.key:'';
 		}
 	});
 
@@ -265,18 +269,24 @@ document.addEventListener('DOMContentLoaded', function(e){
 	// total technologies
 	document.getElementById('fullTech').innerHTML = status.fullTech.length;
 
+	// total keypresses
+	document.getElementById('fullKey').innerHTML = status.fullKey;
+
 	// AVERAGE //
 	// hours per day
 	document.getElementById('avgHoursDay').innerHTML = ((status.fullTime / 3600) / status.fullDay).toFixed(2);
 
-	// days per months
+	// days per month
 	document.getElementById('avgDaysMonths').innerHTML = (status.fullDay / status.fullMonth).toFixed(2);
 
-	// months per years
+	// months per year
 	document.getElementById('avgMonthsYears').innerHTML = (status.fullMonth / status.fullYear).toFixed(2);
 
-	// technologies per projects
+	// technologies per project
 	document.getElementById('avgTechProj').innerHTML = (status.fullTech.length / status.fullProj.length).toFixed(2);
+
+	// keypress per hour
+	document.getElementById('avgKeyHour').innerHTML = (status.fullTime > 3600)? (status.fullKey / (status.fullTime / 3600)).toFixed(2): 0;
 
 	// ABOUT //
 	// codetimetracker version
@@ -598,6 +608,6 @@ document.addEventListener('DOMContentLoaded', function(e){
 	myChart.setOption(yearGraph);
 
 	console.log("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	console.log("┃               CodeTimeTracker v" + sttsObject[0].cttVersion + "                ┃");
+	console.log("┃               CodeTimeTracker v" + sttsObject[0].cttVersion + "               ┃");
 	console.log("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 });

@@ -1,6 +1,6 @@
 
-v1.2.9
+v1.3.10
 
      Changelog
 
-        adjust for create status file after update.
+        New feature - Keypresses

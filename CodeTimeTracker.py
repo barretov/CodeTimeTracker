@@ -17,8 +17,9 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     time_inactivity = time.time()
     current_project = "none"
     current_technology = "none"
+    key = 0
     stVersion = sublime.version()
-    cttVersion = "1.2.9" # current version
+    cttVersion = "1.3.10" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
@@ -32,6 +33,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     #  listeners  #
     def on_activated(self, view):
         self.handle_active()
+        self.file_status()
 
     def on_load_async(self, view):
         self.handle_active()
@@ -47,6 +49,9 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 
     def on_close(self, view):
         self.handle_active()
+
+    def on_modified(self, view):
+        self.key += + 1
 
     # controller
     def handle_active(self):
@@ -97,17 +102,6 @@ class CodeTimeTracker (sublime_plugin.EventListener):
                 self.time_start = time.time()
                 self.time_inactivity = time.time()
 
-        # verify if exists the file status
-        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt") is False:
-
-            # status.txt
-            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
-            create_json.close()
-
-            # write status file
-            with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
-                 file.writelines("stts" + "{" + "\"stVersion\"" + ":" + str(self.stVersion) + "," + "\"cttVersion\"" + ":\"" + str(self.cttVersion) + "\","  + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
-
     # save
     def save_time(self):
 
@@ -126,11 +120,25 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         now_time = int(time.time()) - int(self.time_start)
 
         with open(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt", 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "}" + "\n")
+            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
 
-        # reset time variables
+        # reset variables
         self.time_start = time.time()
         self.time_inactivity = time.time()
+        self.key = 0
+
+    def file_status(self):
+
+        # verify if exists the file status
+        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt") is False:
+
+            # status.txt
+            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
+            create_json.close()
+
+            # write status file
+            with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
+                 file.writelines("stts" + "{" + "\"stVersion\"" + ":" + str(self.stVersion) + "," + "\"cttVersion\"" + ":\"" + str(self.cttVersion) + "\","  + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
 
 # open the dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
