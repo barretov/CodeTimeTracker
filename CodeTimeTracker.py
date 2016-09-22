@@ -19,7 +19,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     current_technology = "none"
     key = 0
     stVersion = sublime.version()
-    cttVersion = "1.3.10" # current version
+    cttVersion = "1.4.10" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
@@ -113,8 +113,8 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
 
             # data.txt
-            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
-            create_json.close()
+            create_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
+            create_file.close()
 
         # set now time variable
         now_time = int(time.time()) - int(self.time_start)
@@ -133,12 +133,23 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt") is False:
 
             # status.txt
-            create_json = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
-            create_json.close()
+            create_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
+            create_file.close()
 
             # write status file
             with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
                  file.writelines("stts" + "{" + "\"stVersion\"" + ":" + str(self.stVersion) + "," + "\"cttVersion\"" + ":\"" + str(self.cttVersion) + "\","  + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
+
+        else:
+            # get sublime version
+            stts_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "r")
+            stts_file.seek(17)
+            st_version = stts_file.read(4)
+            stts_file.close()
+
+            # If the sublime has a new version, remove the file
+            if self.stVersion != st_version:
+                os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
 
 # open the dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
