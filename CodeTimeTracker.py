@@ -19,7 +19,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     current_technology = "none"
     key = 0
     stVersion = sublime.version()
-    cttVersion = "1.4.10" # current version
+    cttVersion = "1.4.12" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
@@ -106,26 +106,59 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     def save_time(self):
 
         # verify if exists file data
+        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is False:
+
+            # verify if exists backup file data
+            if os.path.exists(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt") is True:
+
+                try:
+                    # copy backup file
+                    shutil.copy(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt", os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt")
+                except Exception as e:
+                    print(e)
+
+            else:
+
+                if os.path.exists(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker") is False:
+
+                    try:
+                        # make folder 
+                        os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
+                    except Exception as e:
+                        print(e)
+
+        # verify if exists backup data
         if os.path.exists(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt") is False:
+            if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt") is True:
 
-            # make folder and file
-            # User/CodetimeTracker
-            os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
+                try:
+                    # make backup folder  and copy file to backup
+                    os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
+                    shutil.copy(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt")
+                except Exception as e:
+                    print(e)
 
-            # data.txt
-            create_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt", "w")
-            create_file.close()
+        # set time variables
+        time_spent = int(time.time()) - int(self.time_start)
+        now_datetime = datetime.now()
 
-        # set now time variable
-        now_time = int(time.time()) - int(self.time_start)
-
-        with open(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt", 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+        # call write files
+        self.write_file(time_spent, now_datetime,  "/User/CodeTimeTracker/data.txt" )
+        self.write_file(time_spent, now_datetime,  "/CodeTimeTracker/data.txt")
 
         # reset variables
         self.time_start = time.time()
         self.time_inactivity = time.time()
         self.key = 0
+
+    # write files
+    def write_file(self, time_spent, now_datetime, local):
+
+        try:
+            with open(os.path.realpath(sublime.packages_path()) + local, 'a') as file:
+                file.writelines("data" + "{" + "\"date\"" + ":\"" + str(now_datetime) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(time_spent) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+        except Exception as e:
+            print(e)
 
     def file_status(self):
 
@@ -156,13 +189,15 @@ class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         HttpServer().start()
-        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port) + "/CodeTimeTracker")
+        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port))
 
 # remove file data.
 class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         shutil.rmtree(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker")
+        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/data.txt")
+        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
         sublime.active_window().status_message("CodeTimeTracker | Data deleted")
 
 # HTTP Server
@@ -173,7 +208,6 @@ class HttpServer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-        os.chdir(os.path.realpath(sublime.packages_path()))
         handler = http.server.SimpleHTTPRequestHandler
         self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False)
 

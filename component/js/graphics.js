@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function(e){
 
 	// get data archive.
 	let reqData = new XMLHttpRequest();
-	reqData.open('get', '../User/CodeTimeTracker/data.txt', false);
+	reqData.open('get', 'data.txt', false);
 
 	reqData.onload = function(e){
 		data = e.target.response;
