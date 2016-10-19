@@ -19,10 +19,11 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     current_technology = "none"
     key = 0
     stVersion = sublime.version()
-    cttVersion = "1.4.12" # current version
+    cttVersion = "1.4.13" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
+    httpThread = False
 
     # show init message
     sublime.active_window().status_message("CodeTimeTracker | Started")
@@ -188,7 +189,14 @@ class CodeTimeTracker (sublime_plugin.EventListener):
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
-        HttpServer().start()
+        try:
+            if CodeTimeTracker.httpThread is False:
+                CodeTimeTracker.httpThread = HttpServer()
+                CodeTimeTracker.httpThread.start()
+
+        except Exception as e:
+            print(e)
+
         webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port))
 
 # remove file data.
@@ -208,18 +216,21 @@ class HttpServer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-        handler = http.server.SimpleHTTPRequestHandler
-        self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False)
-
     def run(self):
 
         try:
-            self.httpd.server_bind()
-            self.httpd.server_activate()
-            self.httpd.serve_forever()
+            handler = http.server.SimpleHTTPRequestHandler
+            os.chdir(os.path.realpath(sublime.packages_path() + "/CodeTimeTracker"))
+            self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False, )
+        
+            try:
+                self.httpd.allow_reuse_address = True
+                self.httpd.server_bind()
+                self.httpd.server_activate()
+                self.httpd.serve_forever()
 
-        except OSError as error:
-            print("CodeTimeTracker | Http server already started")
+            except OSError as error:
+                print(error)
 
-        else:
-            self.httpd.server_activate()
+        except Exception as e:
+            print(e)
