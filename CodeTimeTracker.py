@@ -153,6 +153,15 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             if self.stVersion != st_version:
                 os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
 
+
+# remove file data.
+class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
+
+    def run(self):
+        shutil.rmtree(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker")
+        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
+        sublime.active_window().status_message("CodeTimeTracker | Data deleted")
+
 # open the dashboard
 class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
@@ -164,16 +173,8 @@ class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
 
         except Exception as e:
             print(e)
-
+            
         webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port) + "/CodeTimeTracker/")
-
-# remove file data.
-class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
-
-    def run(self):
-        shutil.rmtree(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker")
-        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
-        sublime.active_window().status_message("CodeTimeTracker | Data deleted")
 
 # HTTP Server
 class HttpServer(threading.Thread):
