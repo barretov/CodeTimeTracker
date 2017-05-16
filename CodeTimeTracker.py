@@ -19,10 +19,11 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     current_technology = "none"
     key = 0
     stVersion = sublime.version()
-    cttVersion = "1.4.10" # current version
+    cttVersion = "1.4.14" # current version
     platform = sublime.platform()
     arch = sublime.arch()
     httpServer_port = 10123
+    httpThread = False
 
     # show init message
     sublime.active_window().status_message("CodeTimeTracker | Started")
@@ -108,19 +109,20 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         # verify if exists file data
         if os.path.exists(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt")) is False:
 
-            # make folder and file
-            # User/CodetimeTracker
-            os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
+            try:
+                # make folder 
+                os.makedirs(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
+            except Exception as e:
+                print(e)
 
-            # data.txt
-            create_file = open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt"), "w")
-            create_file.close()
+        # set time variables
+        time_spent = int(time.time()) - int(self.time_start)
 
-        # set now time variable
-        now_time = int(time.time()) - int(self.time_start)
-
-        with open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt"), 'a') as file:
-            file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+        try:
+            with open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt"), 'a') as file:
+                file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(time_spent) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+        except Exception as e:
+            print(e)
 
         # reset variables
         self.time_start = time.time()
@@ -151,19 +153,28 @@ class CodeTimeTracker (sublime_plugin.EventListener):
             if self.stVersion != st_version:
                 os.remove(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"))
 
-# open the dashboard
-class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
-
-    def run(self):
-        HttpServer().start()
-        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port))
 
 # remove file data.
 class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
         shutil.rmtree(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
+        os.remove(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"))
         sublime.active_window().status_message("CodeTimeTracker | Data deleted")
+
+# open the dashboard
+class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
+
+    def run(self):
+        try:
+            if CodeTimeTracker.httpThread is False:
+                CodeTimeTracker.httpThread = HttpServer()
+                CodeTimeTracker.httpThread.start()
+
+        except Exception as e:
+            print(e)
+            
+        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port))
 
 # HTTP Server
 class HttpServer(threading.Thread):
@@ -172,19 +183,22 @@ class HttpServer(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        os.chdir(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
-        handler = http.server.SimpleHTTPRequestHandler
-        self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False)
 
     def run(self):
 
         try:
-            self.httpd.server_bind()
-            self.httpd.server_activate()
-            self.httpd.serve_forever()
+            handler = http.server.SimpleHTTPRequestHandler
+            os.chdir(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
+            self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False, )
+        
+            try:
+                self.httpd.allow_reuse_address = True
+                self.httpd.server_bind()
+                self.httpd.server_activate()
+                self.httpd.serve_forever()
 
-        except OSError as error:
-            print("CodeTimeTracker | Http server already started")
+            except OSError as error:
+                print(error)
 
-        else:
-            self.httpd.server_activate()
+        except Exception as e:
+            print(e)
