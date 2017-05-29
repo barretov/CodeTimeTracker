@@ -8,6 +8,7 @@ from datetime import datetime
 import threading
 import http.server
 import socketserver
+import requests
 
 class CodeTimeTracker (sublime_plugin.EventListener):
 
@@ -107,11 +108,11 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     def save_time(self):
 
         # verify if exists file data
-        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/data.txt") is False:
+        if os.path.exists(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt")) is False:
 
             try:
                 # make folder 
-                os.makedirs(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker/")
+                os.makedirs(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
             except Exception as e:
                 print(e)
 
@@ -119,8 +120,9 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         time_spent = int(time.time()) - int(self.time_start)
 
         try:
-            with open(os.path.realpath(sublime.packages_path()) +  "/User/CodeTimeTracker/data.txt", 'a') as file:
+            with open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt"), 'a') as file:
                 file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(time_spent) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+                requests.post("http://localhost/", data={'data':"data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n"})
         except Exception as e:
             print(e)
 
@@ -132,34 +134,34 @@ class CodeTimeTracker (sublime_plugin.EventListener):
     def file_status(self):
 
         # verify if exists the file status
-        if os.path.exists(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt") is False:
+        if os.path.exists(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt")) is False:
 
             # status.txt
-            create_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "w")
+            create_file = open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"), "w")
             create_file.close()
 
             # write status file
-            with open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", 'a') as file:
+            with open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"), 'a') as file:
                  file.writelines("stts" + "{" + "\"stVersion\"" + ":" + str(self.stVersion) + "," + "\"cttVersion\"" + ":\"" + str(self.cttVersion) + "\","  + "\"arch\"" + ":\"" + str(self.arch) + "\"," + "\"platform\"" + ":\"" + str(self.platform) + "\"" + "}")
 
         else:
             # get sublime version
-            stts_file = open(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt", "r")
+            stts_file = open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"), "r")
             stts_file.seek(17)
             st_version = stts_file.read(4)
             stts_file.close()
 
             # If the sublime has a new version, remove the file
             if self.stVersion != st_version:
-                os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
+                os.remove(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"))
 
 
 # remove file data.
 class CodeTimeTrackerDeleteDataCommand(sublime_plugin.ApplicationCommand):
 
     def run(self):
-        shutil.rmtree(os.path.realpath(sublime.packages_path()) + "/User/CodeTimeTracker")
-        os.remove(os.path.realpath(sublime.packages_path()) + "/CodeTimeTracker/status.txt")
+        shutil.rmtree(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
+        os.remove(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker", "status.txt"))
         sublime.active_window().status_message("CodeTimeTracker | Data deleted")
 
 # open the dashboard
@@ -174,7 +176,7 @@ class CodeTimeTrackerDashboardCommand(sublime_plugin.ApplicationCommand):
         except Exception as e:
             print(e)
             
-        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port) + "/CodeTimeTracker/")
+        webbrowser.open_new_tab("http://localhost:" + str(CodeTimeTracker.httpServer_port))
 
 # HTTP Server
 class HttpServer(threading.Thread):
@@ -188,7 +190,7 @@ class HttpServer(threading.Thread):
 
         try:
             handler = http.server.SimpleHTTPRequestHandler
-            os.chdir(os.path.realpath(sublime.packages_path()))
+            os.chdir(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker"))
             self.httpd = socketserver.TCPServer(('', CodeTimeTracker.httpServer_port), handler, bind_and_activate=False, )
         
             try:
