@@ -8,6 +8,7 @@ from datetime import datetime
 import threading
 import http.server
 import socketserver
+import requests
 
 class CodeTimeTracker (sublime_plugin.EventListener):
 
@@ -121,6 +122,7 @@ class CodeTimeTracker (sublime_plugin.EventListener):
         try:
             with open(os.path.join(os.path.realpath(sublime.packages_path()), "User","CodeTimeTracker","data.txt"), 'a') as file:
                 file.writelines("data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(time_spent) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n")
+                requests.post("http://localhost/", data={'data':"data" + "{" + "\"date\"" + ":\"" + str(datetime.now()) + "\"," + "\"project\"" + ":\"" + self.current_project + "\"," + "\"tech\"" + ":\"" + self.current_technology + "\"," + "\"time\"" + ":" + str(now_time) + "," + "\"key\"" + ":" + str(self.key) + "}" + "\n"})
         except Exception as e:
             print(e)
 
