@@ -1,15 +1,23 @@
 body{
   background-color: rgb(247,247,247);
+  background-color: #222;
+  color: #fff;
 }
-
+legend{
+  color: #fff;
+}
 .text-gray{
   color: rgb(98,98,98);
+  color: yellow;
 }
 
 .graphic {
-  height: 270px;
+  min-height: 500px;
   padding: 0px 0px 0px 0px;
   margin: 10px 10px 10px 10px;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #fff;
 }
 
 .navbar-fixed-top {
